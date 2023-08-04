@@ -5,35 +5,35 @@ import Burger3 from './../assets/images/burger3.png'
 
 const ListBurger = [
     {
-        id: 1,
+        id: 101,
         name: "The Jalapeno PopperShow",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger,
         price: 'Rp. 45.000'
     },
     {
-        id: 2,
+        id: 102,
         name: "The Mamma Mia",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger1,
         price: 'Rp. 15.000'
     },
     {
-        id: 3,
+        id: 103,
         name: "The Isabella",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger2,
         price: 'Rp. 23.000'
     },
     {
-        id: 4,
+        id: 104,
         name: "Burger King",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger3,
         price: 'Rp. 35.000'
     },
     {
-        id: 5,
+        id: 105,
         name: "Burger CrustyCrab",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger1,

@@ -2,9 +2,9 @@ import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion } from "framer-motion";
 
-const Items = ({ image, name, desc, price }) => {
+const Items = ({ image, name, desc, price, onclick }) => {
   return (
-    <motion.div key={name}
+    <motion.div onClick={onclick} key={name}
       initial={{
         opacity: 0,
       }}
