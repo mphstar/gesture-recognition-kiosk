@@ -6,7 +6,7 @@ const CartItem = ({name, qty, price, image, handlePlus, handleMin}) => {
   return (
     <div className="flex flex-row border-[2px] hover:border-orange-500 duration-500 cursor-default px-4 py-3 justify-between items-center w-full h-fit rounded-lg">
       <div className="flex flex-row">
-        <img className="h-12" src={image} alt="burger" />
+        <img className="h-12 w-12 object-contain" src={image} alt="burger" />
         <div className="flex flex-col w-full">
           <span className="font-semibold line-clamp-1">{name}</span>
           <span className="text-xs text-orange-500 font-bold line-clamp-1">{price}</span>
