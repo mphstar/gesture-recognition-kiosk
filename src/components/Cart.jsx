@@ -21,13 +21,9 @@ const Cart = () => {
     }
     SetDataCart(tempData);
 
-    console.log(tempData);
   };
 
   useEffect(() => {
-    if (CartContent.current) {
-      CartContent.current.scrollTop = CartContent.current.scrollHeight;
-    }
   }, [DataCart]);
 
   return (

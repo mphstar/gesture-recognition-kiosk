@@ -4,7 +4,6 @@ import { CgBorderStyleSolid } from "react-icons/cg";
 import { motion } from "framer-motion";
 
 const CartItem = ({ name, qty, price, image, handlePlus, handleMin }) => {
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -13,8 +12,10 @@ const CartItem = ({ name, qty, price, image, handlePlus, handleMin }) => {
       transition={{ duration: 0.3 }}
       className="flex flex-row border-[2px] hover:border-orange-500 duration-500 cursor-default px-4 py-3 justify-between items-center w-full h-fit rounded-lg"
     >
-      <div className="flex flex-row">
-        <img className="h-12 w-12 object-contain" src={image} alt="burger" />
+      <div className="flex flex-row items-center gap-3">
+        <div className="h-12 w-12 flex items-center">
+          <img className="object-contain" src={image} alt="burger" />
+        </div>
         <div className="flex flex-col w-full">
           <span className="font-semibold line-clamp-1">{name}</span>
           <span className="text-xs text-orange-500 font-bold line-clamp-1">

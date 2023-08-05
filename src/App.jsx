@@ -44,7 +44,7 @@ function App() {
   };
 
   const handleCart = (data) => {
-    const datas = DataCart.filter((item) => item.id === data.id);
+    const datas = DataCart.filter((item) => item.data.id === data.id);
     if (datas.length == 0) {
       SetDataCart([
         ...DataCart,
