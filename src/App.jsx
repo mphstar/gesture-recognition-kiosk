@@ -11,6 +11,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import ListData from "./models";
 import ItemContext from "./utils/ItemContext,js";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 function App() {
   const [isShowCart, ShowCart] = useState(false);
@@ -23,16 +26,37 @@ function App() {
     SetTabSelected(category);
   };
 
-  const handleCart = (data) => {
-    const datas = DataCart.filter((item) => item.id === data.id)
-    if(datas.length == 0){
-      SetDataCart([...DataCart, data])
+  const HandleToast = (status) => {
+    if (status == "success") {
+      toast.success("🦄 Success add to cart", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      Swal.fire("Failed", "This item already add to cart", "error");
     }
+  };
 
-    if(DataCart.length == 0){
-      SetDataCart([...DataCart, data])
+  const handleCart = (data) => {
+    const datas = DataCart.filter((item) => item.id === data.id);
+    if (datas.length == 0) {
+      SetDataCart([
+        ...DataCart,
+        {
+          data: data,
+          qty: 1,
+        },
+      ]);
+      HandleToast("success");
+    } else {
+      HandleToast("error");
     }
-    
   };
 
   useEffect(() => {
@@ -41,6 +65,7 @@ function App() {
 
   return (
     <ItemContext.Provider value={[DataCart, SetDataCart]}>
+      <ToastContainer />
       <div
         className={`bg-gray-500 min-h-screen flex items-center justify-center px-4 py-4`}
       >
@@ -112,7 +137,7 @@ function App() {
             } duration-300 ease-in-out lg:scale-100`}
           >
             <div className="flex bg-white w-full h-full rounded-2xl">
-              <Cart  />
+              <Cart />
             </div>
           </div>
           <div
@@ -122,8 +147,12 @@ function App() {
             <div className=" flex justify-center items-center  w-16 h-16 p-4 drop-shadow-md rounded-full bg-orange-500">
               <BsCartCheck className="h-full w-full" color="white" />
             </div>
-            <div className="h-6 w-6 border-[2px] text-xs bg-white flex items-center justify-center rounded-full absolute top-0 right-1">
-              5
+            <div
+              className={`h-6 w-6 border-[2px] text-xs bg-white ${
+                DataCart.length == 0 ? "hidden" : "flex"
+              } items-center justify-center rounded-full absolute top-0 right-1`}
+            >
+              {DataCart.length}
             </div>
           </div>
         </div>
