@@ -31,7 +31,7 @@ const Cart = () => {
       {/* Cart */}
       <div
         ref={CartContent}
-        className="flex flex-col flex-grow w-full overflow-y-auto px-4 mb-4"
+        className="flex flex-col flex-grow w-full overflow-y-auto px-4 mb-4 select-none"
       >
         <p>
           <BsCartCheck className="h-12 w-full" />
