@@ -2,29 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+body {
+    padding: 0;
+    margin: 0;
+    @apply bg-gray-500
+}
+
+* { 
   @apply m-0 p-0 box-border
 }
 
 /* width */
-::-webkit-scrollbar {
+.scroll-cart::-webkit-scrollbar {
     width: 8px;
     height: 6px;
 }
   
 /* Track */
-::-webkit-scrollbar-track {
+.scroll-cart::-webkit-scrollbar-track {
     border-radius: 5px; 
     @apply bg-gray-300
 }
   
 /* Handle */
-::-webkit-scrollbar-thumb {
+.scroll-cart::-webkit-scrollbar-thumb {
     border-radius: 5px;
     @apply bg-orange-500
 }
   
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.scroll-cart::-webkit-scrollbar-thumb:hover {
     @apply bg-orange-700
 }

@@ -39,7 +39,12 @@ function App() {
         theme: "light",
       });
     } else {
-      Swal.fire("Failed", "This item already add to cart", "error");
+      // document.body.style.overflow = "hidden";
+      console.log(document.body.firstChild);
+      Swal.fire("Failed", "This item already add to cart", "error").then(() => {
+        // document.body.style.overflow = "unset";
+        console.log(document.body.firstChild);
+      });
     }
   };
 
@@ -60,8 +65,7 @@ function App() {
   };
 
   useEffect(() => {
-    document.body.style.overflow = isShowCart ? "hidden" : "unset";
-  }, [isShowCart]);
+  }, []);
 
   return (
     <ItemContext.Provider value={[DataCart, SetDataCart]}>
