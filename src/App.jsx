@@ -27,6 +27,7 @@ function App() {
 
   const kontenTab = useRef(null)
   const kontenItem = useRef(null)
+  const kontenCart = useRef(null)
 
   const [IsFocus, SetFocus] = useState({
     description: '',
@@ -86,7 +87,7 @@ function App() {
   }, [IsConnected]);
 
   return (
-    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab, kontenItem}}>
+    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab, kontenItem, kontenCart, ShowCart}}>
       {IsConnected ? (
         <div className="fixed z-[90] opacity-0 flex justify-center items-center w-full h-full pointer-events-none">
           <Video />
@@ -98,14 +99,14 @@ function App() {
         className={`bg-gray-500 min-h-screen flex items-center justify-center px-4 py-4`}
       >
         <div className="flex flex-col lg:flex-row bg-gray-100 rounded-lg h-full lg:h-[800px] max-w-[1280px] w-full overflow-x-hidden">
-          <div className="flex flex-col px-4 w-full lg:w-[70%] h-full py-4">
-            <div className="h-fit flex">
+          <div className="flex flex-col px-0 w-full lg:w-[70%] h-full py-4">
+            <div className="h-fit flex mb-4 px-4">
               <Header />
             </div>
             <div className="flex w-full flex-1 flex-col lg:flex-row overflow-hidden">
               <div ref={kontenTab}
                 id="content-tab"
-                className="w-full h-full lg:w-[480px] px-4 py-4  mt-4 flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
+                className="w-full h-full items-center lg:w-[480px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
                 <TabItems
                   onclick={() => handleTab(ListData.burger, "Burger")}
@@ -164,7 +165,7 @@ function App() {
               isShowCart ? "scale-100" : "scale-0"
             } duration-300 ease-in-out lg:scale-100`}
           >
-            <div className="flex bg-white w-full h-full rounded-2xl">
+            <div ref={kontenCart} className="flex bg-white w-full h-full duration-300 ease-in-out border-[2px] border-transparent border-opacity-40 rounded-2xl">
               <Cart />
             </div>
           </div>
