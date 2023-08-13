@@ -8,18 +8,30 @@ import Cart from "./components/Cart";
 import { BsCartCheck } from "react-icons/bs";
 import BackgroundModal from "./components/BackgroundModal";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ListData from "./models";
-import ItemContext from "./utils/ItemContext,js";
+import ItemContext from "./utils/ItemContext.js";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { socket } from "./utils/socket";
+import Video from "./components/Video";
 
 function App() {
   const [isShowCart, ShowCart] = useState(false);
   const [DataShow, SetDataShow] = useState(ListData.burger);
   const [tabSelected, SetTabSelected] = useState("Burger");
   const [DataCart, SetDataCart] = useState([]);
+
+  const [IsConnected, SetIsConnected] = useState(false);
+
+  const kontenTab = useRef(null)
+  const kontenItem = useRef(null)
+
+  const [IsFocus, SetFocus] = useState({
+    description: '',
+    focused: null,
+  })
 
   const handleTab = (data, category) => {
     SetDataShow(data);
@@ -65,10 +77,22 @@ function App() {
   };
 
   useEffect(() => {
-  }, []);
+    socket.on("connect", () => {
+      SetIsConnected(true);
+    });
+
+    return () => {
+    }
+  }, [IsConnected]);
 
   return (
-    <ItemContext.Provider value={[DataCart, SetDataCart]}>
+    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab}}>
+      {IsConnected ? (
+        <div className="fixed z-[90] opacity-50 flex justify-center items-center w-full h-full pointer-events-none">
+          <Video />
+        </div>
+      ) : undefined}
+
       <ToastContainer />
       <div
         className={`bg-gray-500 min-h-screen flex items-center justify-center px-4 py-4`}
@@ -79,7 +103,7 @@ function App() {
               <Header />
             </div>
             <div className="flex w-full flex-1 flex-col lg:flex-row overflow-hidden">
-              <div
+              <div ref={kontenTab}
                 id="content-tab"
                 className="w-full h-full lg:w-[480px] px-4 py-4  mt-4 flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
@@ -113,7 +137,7 @@ function App() {
                   {tabSelected}
                 </motion.h1>
                 <AnimatePresence>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3">
+                  <div ref={kontenItem} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3">
                     {DataShow.map((value, index) => {
                       return (
                         <Items
