@@ -86,9 +86,9 @@ function App() {
   }, [IsConnected]);
 
   return (
-    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab}}>
+    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab, kontenItem}}>
       {IsConnected ? (
-        <div className="fixed z-[90] opacity-50 flex justify-center items-center w-full h-full pointer-events-none">
+        <div className="fixed z-[90] opacity-0 flex justify-center items-center w-full h-full pointer-events-none">
           <Video />
         </div>
       ) : undefined}

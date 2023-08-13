@@ -8,11 +8,12 @@ import React, {
 import Webcam from "react-webcam";
 import { socket } from "../utils/socket";
 import ItemContext from "../utils/ItemContext";
+import Swal from "sweetalert2";
 const Video = () => {
   const camm = useRef(null);
   const mycanv = useRef(null);
 
-  const { IsFocus, SetFocus, kontenTab } = useContext(ItemContext);
+  const { IsFocus, SetFocus, kontenTab, kontenItem } = useContext(ItemContext);
 
   const [nilai, setNilai] = useState({
     hand: null,
@@ -29,6 +30,26 @@ const Video = () => {
           description: "Focused Tab",
           focused: kontenTab,
         });
+      } else if (
+        (nilai.hand == "Left" || nilai.hand == "Right") &&
+        nilai.gesture == "Two"
+      ) {
+        // Here focused to item menu
+        SetFocus({
+          ...IsFocus,
+          description: "Focused Item",
+          focused: kontenItem,
+          itemFocused: kontenItem.current.firstChild,
+        });
+        kontenItem.current.firstChild.children[0].classList.add(
+          "-translate-y-5"
+        );
+        kontenItem.current.firstChild.children[1].classList.add(
+          "border-orange-500"
+        );
+        kontenItem.current.firstChild.children[1].classList.add("pt-8");
+
+        // console.log(kontenItem.current.firstChild.getAttribute('class'));
       }
     } else {
       if (IsFocus.focused == kontenTab) {
@@ -42,17 +63,130 @@ const Video = () => {
             description: "",
             focused: null,
           });
-          
-        } else if((nilai.hand == "Left" || nilai.hand == "Right") && nilai.gesture == "One"){
+        } else if (
+          (nilai.hand == "Left" || nilai.hand == "Right") &&
+          nilai.gesture == "One"
+        ) {
           // Go to tab one
-          IsFocus.focused.current.children[0].click()
-        } else if((nilai.hand == "Left" || nilai.hand == "Right") && nilai.gesture == "Two"){
+          IsFocus.focused.current.children[0].click();
+        } else if (
+          (nilai.hand == "Left" || nilai.hand == "Right") &&
+          nilai.gesture == "Two"
+        ) {
           // Go to tab two
-          IsFocus.focused.current.children[1].click()
-        } else if((nilai.hand == "Left" || nilai.hand == "Right") && nilai.gesture == "Three"){
+          IsFocus.focused.current.children[1].click();
+        } else if (
+          (nilai.hand == "Left" || nilai.hand == "Right") &&
+          nilai.gesture == "Three"
+        ) {
           // Go to tab three
-          IsFocus.focused.current.children[2].click()
-        } 
+          IsFocus.focused.current.children[2].click();
+        }
+      } else if (IsFocus.focused == kontenItem) {
+        if (
+          (nilai.hand == "Left" || nilai.hand == "Right") &&
+          nilai.gesture == "Close"
+        ) {
+          // Here unfocus
+          IsFocus.itemFocused.children[0].classList.remove("-translate-y-5");
+          IsFocus.itemFocused.children[1].classList.remove("border-orange-500");
+          IsFocus.itemFocused.children[1].classList.remove("pt-8");
+
+          SetFocus({
+            ...IsFocus,
+            description: "",
+            focused: null,
+          });
+        } else if (nilai.hand == "Right" && nilai.gesture == "One") {
+          // Focus in next item
+          // cek if last item: do nothing
+          if (IsFocus.focused.current.lastChild != IsFocus.itemFocused) {
+            // remove effect focus
+            IsFocus.itemFocused.children[0].classList.remove("-translate-y-5");
+            IsFocus.itemFocused.children[1].classList.remove(
+              "border-orange-500"
+            );
+            IsFocus.itemFocused.children[1].classList.remove("pt-8");
+
+            // Add effects for next item
+            for (
+              let index = 0;
+              index < IsFocus.focused.current.children.length;
+              index++
+            ) {
+              const element = IsFocus.focused.current.children[index];
+              if (element == IsFocus.itemFocused) {
+                window.scrollTo({
+                  top: IsFocus.focused.current.children[index + 1].offsetTop - IsFocus.focused.current.children[index + 1].offsetHeight,
+                  behavior: "smooth",
+                });
+                IsFocus.focused.current.children[ 
+                  index + 1
+                ].children[0].classList.add("-translate-y-5");
+                IsFocus.focused.current.children[
+                  index + 1
+                ].children[1].classList.add("border-orange-500");
+                IsFocus.focused.current.children[
+                  index + 1
+                ].children[1].classList.add("pt-8");
+
+                // then set new focus
+                SetFocus({
+                  ...IsFocus,
+                  description: "Focused Item",
+                  focused: kontenItem,
+                  itemFocused: IsFocus.focused.current.children[index + 1],
+                });
+              }
+            }
+          }
+        } else if (nilai.hand == "Left" && nilai.gesture == "One") {
+          // Focus in previus item
+          // cek if first item: do nothing
+          if (IsFocus.focused.current.firstChild != IsFocus.itemFocused) {
+            // remove effect focus
+            IsFocus.itemFocused.children[0].classList.remove("-translate-y-5");
+            IsFocus.itemFocused.children[1].classList.remove(
+              "border-orange-500"
+            );
+            IsFocus.itemFocused.children[1].classList.remove("pt-8");
+
+            // Add effects for previus item
+            for (
+              let index = 0;
+              index < IsFocus.focused.current.children.length;
+              index++
+            ) {
+              const element = IsFocus.focused.current.children[index];
+              if (element == IsFocus.itemFocused) {
+                window.scrollTo({
+                  top: index == 1 ? 0 : IsFocus.focused.current.children[index - 1].offsetTop - IsFocus.focused.current.children[index - 1].offsetHeight,
+                  behavior: "smooth",
+                });
+                IsFocus.focused.current.children[
+                  index - 1
+                ].children[0].classList.add("-translate-y-5");
+                IsFocus.focused.current.children[
+                  index - 1
+                ].children[1].classList.add("border-orange-500");
+                IsFocus.focused.current.children[
+                  index - 1
+                ].children[1].classList.add("pt-8");
+
+                // then set new focus
+                SetFocus({
+                  ...IsFocus,
+                  description: "Focused Item",
+                  focused: kontenItem,
+                  itemFocused: IsFocus.focused.current.children[index - 1],
+                });
+              }
+            }
+          }
+        } else if (nilai.hand == "Right" && nilai.gesture == "Okay") {
+          // Add to
+          IsFocus.itemFocused.click();
+        }
       }
     }
 
@@ -60,11 +194,15 @@ const Video = () => {
   };
 
   useLayoutEffect(() => {
-    handleGesture();
+    Swal.isVisible()
+      ? nilai.hand == "Left" && nilai.gesture == "Okay"
+        ? Swal.close()
+        : undefined
+      : handleGesture();
   }, [nilai]);
 
   useEffect(() => {
-    const FPS = 10;
+    const FPS = 1;
     const contextCanvas = mycanv.current.getContext("2d");
     setInterval(() => {
       // console.log("dwa");
@@ -79,7 +217,7 @@ const Video = () => {
       contextCanvas.clearRect(0, 0, 800, 600);
       // console.log(data);
       socket.emit("image", data);
-    }, 1000 / FPS);
+    }, 700 / FPS);
 
     socket.on("processed_image", function (image) {
       if (image.result !== "null") {
