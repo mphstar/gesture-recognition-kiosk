@@ -25,14 +25,14 @@ function App() {
 
   const [IsConnected, SetIsConnected] = useState(false);
 
-  const kontenTab = useRef(null)
-  const kontenItem = useRef(null)
-  const kontenCart = useRef(null)
+  const kontenTab = useRef(null);
+  const kontenItem = useRef(null);
+  const kontenCart = useRef(null);
 
   const [IsFocus, SetFocus] = useState({
-    description: '',
+    description: "",
     focused: null,
-  })
+  });
 
   const handleTab = (data, category) => {
     SetDataShow(data);
@@ -53,10 +53,15 @@ function App() {
       });
     } else {
       // document.body.style.overflow = "hidden";
-      console.log(document.body.firstChild);
-      Swal.fire("Failed", "This item already add to cart", "error").then(() => {
-        // document.body.style.overflow = "unset";
-        console.log(document.body.firstChild);
+      toast.error("Items already in cart!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
     }
   };
@@ -82,12 +87,22 @@ function App() {
       SetIsConnected(true);
     });
 
-    return () => {
-    }
+    return () => {};
   }, [IsConnected]);
 
   return (
-    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab, kontenItem, kontenCart, ShowCart}}>
+    <ItemContext.Provider
+      value={{
+        DataCart,
+        SetDataCart,
+        IsFocus,
+        SetFocus,
+        kontenTab,
+        kontenItem,
+        kontenCart,
+        ShowCart,
+      }}
+    >
       {IsConnected ? (
         <div className="fixed z-[90] opacity-0 flex justify-center items-center w-full h-full pointer-events-none">
           <Video />
@@ -104,7 +119,8 @@ function App() {
               <Header />
             </div>
             <div className="flex w-full flex-1 flex-col lg:flex-row overflow-hidden">
-              <div ref={kontenTab}
+              <div
+                ref={kontenTab}
                 id="content-tab"
                 className="w-full h-full items-center lg:w-[480px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
@@ -138,7 +154,10 @@ function App() {
                   {tabSelected}
                 </motion.h1>
                 <AnimatePresence>
-                  <div ref={kontenItem} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3">
+                  <div
+                    ref={kontenItem}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3"
+                  >
                     {DataShow.map((value, index) => {
                       return (
                         <Items
@@ -165,7 +184,10 @@ function App() {
               isShowCart ? "scale-100" : "scale-0"
             } duration-300 ease-in-out lg:scale-100`}
           >
-            <div ref={kontenCart} className="flex bg-white w-full h-full duration-300 ease-in-out border-[2px] border-transparent border-opacity-40 rounded-2xl">
+            <div
+              ref={kontenCart}
+              className="flex bg-white w-full h-full duration-300 ease-in-out border-[2px] border-transparent border-opacity-40 rounded-2xl"
+            >
               <Cart />
             </div>
           </div>

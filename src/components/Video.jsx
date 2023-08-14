@@ -24,7 +24,10 @@ const Video = () => {
   const handleGesture = () => {
     if (IsFocus.focused == null) {
       // here is not focused
-      if (nilai.hand == "Left" && nilai.gesture == "Open") {
+      if (
+        (nilai.hand == "Left" || nilai.hand == "Right") &&
+        nilai.gesture == "One"
+      ) {
         // Here focused to tab menu
         SetFocus({
           ...IsFocus,
@@ -55,7 +58,10 @@ const Video = () => {
         kontenItem.current.firstChild.children[1].classList.add("pt-8");
 
         // console.log(kontenItem.current.firstChild.getAttribute('class'));
-      } else if (nilai.hand == "Right" && nilai.gesture == "Open") {
+      } else if (
+        (nilai.hand == "Right" || nilai.hand == "Left") &&
+        nilai.gesture == "Three"
+      ) {
         // Here focused to cart
         ShowCart(true);
         const contentCart =
@@ -227,7 +233,7 @@ const Video = () => {
               }
             }
           }
-        } else if (nilai.hand == "Right" && nilai.gesture == "Okay") {
+        } else if ((nilai.hand == "Right" || nilai.hand == "Left") && nilai.gesture == "Okay") {
           // Add to
           IsFocus.itemFocused.click();
         }
@@ -345,6 +351,21 @@ const Video = () => {
               }
             }
           }
+        } else if (nilai.hand == "Right" && nilai.gesture == "Thumb Up") {
+          if (IsFocus.itemFocused) {
+            // increase quantity
+            IsFocus.itemFocused.children[1].children[2].click()
+          }
+        } else if(nilai.hand == "Left" && nilai.gesture == "Thumb Up"){
+          if (IsFocus.itemFocused) {
+            // Decrease quantity
+            IsFocus.itemFocused.children[1].children[0].click()
+          }
+        } else if((nilai.hand == "Left" || nilai.hand == "Right") && nilai.gesture == "Okay"){
+          if (IsFocus.itemFocused) {
+            // payyyy
+            IsFocus.focused.current.firstChild.children[1].firstChild.click()
+          }
         }
       }
     }
@@ -353,11 +374,7 @@ const Video = () => {
   };
 
   useLayoutEffect(() => {
-    Swal.isVisible()
-      ? nilai.hand == "Left" && nilai.gesture == "Okay"
-        ? Swal.close()
-        : undefined
-      : handleGesture();
+    handleGesture();
   }, [nilai]);
 
   useEffect(() => {
@@ -376,7 +393,7 @@ const Video = () => {
       contextCanvas.clearRect(0, 0, 800, 600);
       // console.log(data);
       socket.emit("image", data);
-    }, 700 / FPS);
+    }, 1400 / FPS);
 
     socket.on("processed_image", function (image) {
       if (image.result !== "null") {
