@@ -18,11 +18,11 @@ const Items = ({ image, name, desc, price, onclick }) => {
       className="h-fit w-full flex flex-col relative pt-20 group cursor-default"
     >
       <img
-        className="absolute top-0 h-32 w-36 object-contain translate-x-[50%] right-[50%] group-hover:-translate-y-5 duration-500"
+        className={`absolute top-0 h-32 w-36 object-contain translate-x-[50%] right-[50%] group-hover:-translate-y-5 duration-500`}
         src={image}
         alt="burger"
       />
-      <div className="bg-white group-hover:border-orange-500 border-[2px] w-full h-fit px-4 pt-12 group-hover:pt-8 duration-500 rounded-lg">
+      <div className={`bg-white group-hover:border-orange-500 border-[2px] w-full h-fit px-4 pt-12 group-hover:pt-8 duration-500 rounded-lg`}>
         <h1 className="font-bold line-clamp-1">{name}</h1>
         <p className="text-xs line-clamp-3">{desc}</p>
         <div className="w-full h-fit flex items-center justify-between py-4">

@@ -8,18 +8,31 @@ import Cart from "./components/Cart";
 import { BsCartCheck } from "react-icons/bs";
 import BackgroundModal from "./components/BackgroundModal";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ListData from "./models";
-import ItemContext from "./utils/ItemContext,js";
+import ItemContext from "./utils/ItemContext.js";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { socket } from "./utils/socket";
+import Video from "./components/Video";
 
 function App() {
   const [isShowCart, ShowCart] = useState(false);
   const [DataShow, SetDataShow] = useState(ListData.burger);
   const [tabSelected, SetTabSelected] = useState("Burger");
   const [DataCart, SetDataCart] = useState([]);
+
+  const [IsConnected, SetIsConnected] = useState(false);
+
+  const kontenTab = useRef(null)
+  const kontenItem = useRef(null)
+  const kontenCart = useRef(null)
+
+  const [IsFocus, SetFocus] = useState({
+    description: '',
+    focused: null,
+  })
 
   const handleTab = (data, category) => {
     SetDataShow(data);
@@ -65,23 +78,35 @@ function App() {
   };
 
   useEffect(() => {
-  }, []);
+    socket.on("connect", () => {
+      SetIsConnected(true);
+    });
+
+    return () => {
+    }
+  }, [IsConnected]);
 
   return (
-    <ItemContext.Provider value={[DataCart, SetDataCart]}>
+    <ItemContext.Provider value={{DataCart, SetDataCart, IsFocus, SetFocus, kontenTab, kontenItem, kontenCart, ShowCart}}>
+      {IsConnected ? (
+        <div className="fixed z-[90] opacity-0 flex justify-center items-center w-full h-full pointer-events-none">
+          <Video />
+        </div>
+      ) : undefined}
+
       <ToastContainer />
       <div
         className={`bg-gray-500 min-h-screen flex items-center justify-center px-4 py-4`}
       >
         <div className="flex flex-col lg:flex-row bg-gray-100 rounded-lg h-full lg:h-[800px] max-w-[1280px] w-full overflow-x-hidden">
-          <div className="flex flex-col px-4 w-full lg:w-[70%] h-full py-4">
-            <div className="h-fit flex">
+          <div className="flex flex-col px-0 w-full lg:w-[70%] h-full py-4">
+            <div className="h-fit flex mb-4 px-4">
               <Header />
             </div>
             <div className="flex w-full flex-1 flex-col lg:flex-row overflow-hidden">
-              <div
+              <div ref={kontenTab}
                 id="content-tab"
-                className="w-full h-full lg:w-[480px] px-4 py-4  mt-4 flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
+                className="w-full h-full items-center lg:w-[480px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
                 <TabItems
                   onclick={() => handleTab(ListData.burger, "Burger")}
@@ -113,7 +138,7 @@ function App() {
                   {tabSelected}
                 </motion.h1>
                 <AnimatePresence>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3">
+                  <div ref={kontenItem} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3">
                     {DataShow.map((value, index) => {
                       return (
                         <Items
@@ -140,7 +165,7 @@ function App() {
               isShowCart ? "scale-100" : "scale-0"
             } duration-300 ease-in-out lg:scale-100`}
           >
-            <div className="flex bg-white w-full h-full rounded-2xl">
+            <div ref={kontenCart} className="flex bg-white w-full h-full duration-300 ease-in-out border-[2px] border-transparent border-opacity-40 rounded-2xl">
               <Cart />
             </div>
           </div>

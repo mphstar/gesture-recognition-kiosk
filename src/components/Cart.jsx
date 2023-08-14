@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import CartItem from "./CartItem";
-import ItemContext from "../utils/ItemContext,js";
+import ItemContext from "../utils/ItemContext.js";
 import { AnimatePresence } from "framer-motion";
 
 const Cart = () => {
-  const [DataCart, SetDataCart] = useContext(ItemContext);
+  const {DataCart, SetDataCart} = useContext(ItemContext);
   const CartContent = useRef(null);
 
   const handleQuantity = (option, key) => {
