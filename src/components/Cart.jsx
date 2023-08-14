@@ -4,8 +4,10 @@ import CartItem from "./CartItem";
 import ItemContext from "../utils/ItemContext.js";
 import { AnimatePresence } from "framer-motion";
 
+import { toast } from "react-toastify";
+
 const Cart = () => {
-  const {DataCart, SetDataCart} = useContext(ItemContext);
+  const { DataCart, SetDataCart } = useContext(ItemContext);
   const CartContent = useRef(null);
 
   const handleQuantity = (option, key) => {
@@ -14,17 +16,32 @@ const Cart = () => {
       tempData[key].qty += 1;
     } else {
       if (tempData[key].qty == 1) {
-        tempData.splice(key, 1)
+        tempData.splice(key, 1);
       } else {
         tempData[key].qty -= 1;
       }
     }
     SetDataCart(tempData);
-
   };
 
-  useEffect(() => {
-  }, [DataCart]);
+  const handlePay = () => {
+    if (DataCart.length != 0) {
+      toast.success("Payment Success", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      SetDataCart([]);
+    }
+  };
+
+  useEffect(() => {}, [DataCart]);
 
   return (
     <div className="w-full h-full flex flex-col py-8 lg:px-6">
@@ -57,7 +74,12 @@ const Cart = () => {
       </div>
       {/* Bottom */}
       <div className="w-full h-fit px-4">
-        <div className="w-full h-fit items-center flex justify-center bg-orange-500 rounded-lg px-4 py-4 text-white cursor-pointer font-bold text-center">
+        <div
+          onClick={() => {
+            handlePay();
+          }}
+          className="w-full h-fit items-center flex justify-center bg-orange-500 rounded-lg px-4 py-4 text-white cursor-pointer font-bold text-center"
+        >
           Pay!
         </div>
       </div>
