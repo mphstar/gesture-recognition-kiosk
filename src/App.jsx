@@ -212,10 +212,10 @@ function App() {
             </div>
             <div
               className={`h-6 w-6 border-[2px] text-xs bg-white ${
-                DataCart.length == 0 ? "hidden" : "flex"
+                DataCart.data.length == 0 ? "hidden" : "flex"
               } items-center justify-center rounded-full absolute top-0 right-1`}
             >
-              {DataCart.length}
+              {DataCart.data.length}
             </div>
           </div>
         </div>

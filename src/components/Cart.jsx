@@ -152,7 +152,7 @@ const Cart = () => {
         </div>
       </div>
       {/* Bottom */}
-      <div className="flex flex-col w-full h-fit gap-2 border-t-2 ">
+      <div className="flex flex-col w-full h-fit gap-2 border-t-2 px-4 lg:px-0">
         <div className="flex flex-row justify-between text-[16px] mt-4 ">
           <p>Total Item: {DataCart.total_items}</p>
           <p>Price: {convertRupiah.formatPrice(DataCart.price)}</p>
