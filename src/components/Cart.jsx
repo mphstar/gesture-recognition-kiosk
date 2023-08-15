@@ -65,6 +65,8 @@ const Cart = () => {
             price: 0,
             data: [],
           });
+
+          ShowCart(false);
         }
       });
     }
@@ -111,6 +113,8 @@ const Cart = () => {
             price: 0,
             data: [],
           });
+
+          ShowCart(false);
         }
       });
     }
