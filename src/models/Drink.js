@@ -8,21 +8,21 @@ const ListDrink = [
         name: "Fresh Tea",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Drink,
-        price: 'Rp. 5.000'
+        price: 5000
     },
     {
         id: 202,
         name: "Green Orange",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Drink1,
-        price: 'Rp. 12.000'
+        price: 12000
     },
     {
         id: 203,
         name: "Ice Strawberry",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Drink2,
-        price: 'Rp. 11.000'
+        price: 11000
     },
     
 ]

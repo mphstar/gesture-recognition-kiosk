@@ -9,35 +9,35 @@ const ListBurger = [
         name: "The Jalapeno PopperShow",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger,
-        price: 'Rp. 45.000'
+        price: 45000
     },
     {
         id: 102,
         name: "The Mamma Mia",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger1,
-        price: 'Rp. 15.000'
+        price: 35000
     },
     {
         id: 103,
         name: "The Isabella",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger2,
-        price: 'Rp. 23.000'
+        price: 23000
     },
     {
         id: 104,
         name: "Burger King",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger3,
-        price: 'Rp. 35.000'
+        price: 35000
     },
     {
         id: 105,
         name: "Burger CrustyCrab",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Burger1,
-        price: 'Rp. 25.000'
+        price: 25000
     },
 ]
 

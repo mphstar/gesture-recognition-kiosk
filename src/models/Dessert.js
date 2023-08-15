@@ -8,21 +8,21 @@ const ListDessert = [
         name: "Strawberry Dessert Cake",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Dessert,
-        price: 'Rp. 25.000'
+        price: 25000
     },
     {
         id: 302,
         name: "Strawberry Pudding",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Dessert1,
-        price: 'Rp. 20.000'
+        price: 20000
     },
     {
         id: 303,
         name: "StrawberryChoco Cake",
         desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
         image: Dessert2,
-        price: 'Rp. 32.000'
+        price: 32000
     },
     
 ]
