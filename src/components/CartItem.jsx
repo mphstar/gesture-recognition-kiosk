@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { CgBorderStyleSolid } from "react-icons/cg";
 import { motion } from "framer-motion";
+import convertRupiah from "../utils/convertRupiah";
 
 const CartItem = ({ name, qty, price, image, handlePlus, handleMin }) => {
   return (
@@ -19,7 +20,7 @@ const CartItem = ({ name, qty, price, image, handlePlus, handleMin }) => {
         <div className="flex flex-col w-full">
           <span className="font-semibold line-clamp-1">{name}</span>
           <span className="text-xs text-orange-500 font-bold line-clamp-1">
-            {price}
+            {convertRupiah.formatPrice(price)}
           </span>
         </div>
       </div>

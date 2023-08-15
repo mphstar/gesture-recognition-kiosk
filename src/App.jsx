@@ -16,12 +16,17 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { socket } from "./utils/socket";
 import Video from "./components/Video";
+import convertRupiah from "./utils/convertRupiah";
 
 function App() {
   const [isShowCart, ShowCart] = useState(false);
   const [DataShow, SetDataShow] = useState(ListData.burger);
   const [tabSelected, SetTabSelected] = useState("Burger");
-  const [DataCart, SetDataCart] = useState([]);
+  const [DataCart, SetDataCart] = useState({
+    total_items: 0,
+    price: 0,
+    data: [],
+  });
 
   const [IsConnected, SetIsConnected] = useState(false);
 
@@ -67,15 +72,22 @@ function App() {
   };
 
   const handleCart = (data) => {
-    const datas = DataCart.filter((item) => item.data.id === data.id);
+    // console.log(DataCart.price);
+    const datas = DataCart.data.filter((item) => item.data.id === data.id);
     if (datas.length == 0) {
-      SetDataCart([
+      SetDataCart({
         ...DataCart,
-        {
-          data: data,
-          qty: 1,
-        },
-      ]);
+        total_items: DataCart.data.length + 1,
+        price: DataCart.price + data.price,
+        data: [
+          ...DataCart.data,
+          {
+            data: data,
+            subtotal: data.price,
+            qty: 1,
+          },
+        ],
+      });
       HandleToast("success");
     } else {
       HandleToast("error");

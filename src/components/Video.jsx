@@ -233,7 +233,10 @@ const Video = () => {
               }
             }
           }
-        } else if ((nilai.hand == "Right" || nilai.hand == "Left") && nilai.gesture == "Okay") {
+        } else if (
+          (nilai.hand == "Right" || nilai.hand == "Left") &&
+          nilai.gesture == "Okay"
+        ) {
           // Add to
           IsFocus.itemFocused.click();
         }
@@ -291,7 +294,7 @@ const Video = () => {
                       300,
                     behavior: "smooth",
                   });
-                  console.log(IsFocus.focused);
+                  // console.log(IsFocus.focused);
 
                   contentCart.children[index + 1].classList.add(
                     "border-orange-600"
@@ -354,27 +357,40 @@ const Video = () => {
         } else if (nilai.hand == "Right" && nilai.gesture == "Thumb Up") {
           if (IsFocus.itemFocused) {
             // increase quantity
-            IsFocus.itemFocused.children[1].children[2].click()
+            // console.log(IsFocus.itemFocused);
+            IsFocus.itemFocused.children[1].children[2].click();
           }
-        } else if(nilai.hand == "Left" && nilai.gesture == "Thumb Up"){
+        } else if (nilai.hand == "Left" && nilai.gesture == "Thumb Up") {
           if (IsFocus.itemFocused) {
             // Decrease quantity
-            IsFocus.itemFocused.children[1].children[0].click()
+            IsFocus.itemFocused.children[1].children[0].click();
           }
-        } else if((nilai.hand == "Left" || nilai.hand == "Right") && nilai.gesture == "Okay"){
+        } else if (nilai.hand == "Right" && nilai.gesture == "Okay") {
           if (IsFocus.itemFocused) {
             // payyyy
-            IsFocus.focused.current.firstChild.children[1].firstChild.click()
+            IsFocus.focused.current.firstChild.children[1].children[1].children[1].click();
+          }
+        } else if (nilai.hand == "Left" && nilai.gesture == "Okay") {
+          if (IsFocus.itemFocused) {
+            // Cancel
+            IsFocus.focused.current.firstChild.children[1].children[1].children[0].click();
           }
         }
       }
     }
 
-    console.log(IsFocus.description);
+    // console.log(IsFocus.description);
   };
 
   useLayoutEffect(() => {
-    handleGesture();
+    Swal.isVisible()
+      ? (nilai.hand == "Right" || nilai.hand == "Left") &&
+        nilai.gesture == "Thumb Up"
+        ? nilai.hand == "Right"
+          ? Swal.clickConfirm()
+          : Swal.clickCancel()
+        : undefined
+      : handleGesture();
   }, [nilai]);
 
   useEffect(() => {
@@ -393,7 +409,7 @@ const Video = () => {
       contextCanvas.clearRect(0, 0, 800, 600);
       // console.log(data);
       socket.emit("image", data);
-    }, 1400 / FPS);
+    }, 1200 / FPS);
 
     socket.on("processed_image", function (image) {
       if (image.result !== "null") {
