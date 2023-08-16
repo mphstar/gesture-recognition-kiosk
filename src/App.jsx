@@ -135,7 +135,7 @@ function App() {
               <div
                 ref={kontenTab}
                 id="content-tab"
-                className="w-full h-full items-center lg:w-[480px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
+                className="w-full h-full items-center lg:w-[200px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
                 <TabItems
                   onclick={() => handleTab(ListData.burger, "Snack")}
@@ -156,7 +156,7 @@ function App() {
                   isSelected={tabSelected == "Ice cream" ? true : false}
                 />
               </div>
-              <div className="flex flex-col px-6 mt-4 border-l-[6px] duration-300 ease-in-out border-transparent pb-4">
+              <div className="flex flex-col px-6 mt-4 border-l-[6px] duration-300 w-full ease-in-out border-transparent pb-4">
                 <motion.h1
                   key={tabSelected}
                   initial={{ opacity: 0 }}
