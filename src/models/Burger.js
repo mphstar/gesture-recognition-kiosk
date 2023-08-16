@@ -1,43 +1,44 @@
-import Burger from './../assets/images/burger.png'
-import Burger1 from './../assets/images/burger1.png'
-import Burger2 from './../assets/images/burger2.png'
-import Burger3 from './../assets/images/burger3.png'
+import Snack from './../assets/images/doritos.png'
+import Snack1 from './../assets/images/slai-olai.png'
+import Snack2 from './../assets/images/POP-MIE.png'
+import Snack3 from './../assets/images/nextar.png'
+import Snack4 from './../assets/images/aoka_bread.png'
 
 const ListBurger = [
     {
         id: 101,
-        name: "The Jalapeno PopperShow",
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
-        image: Burger,
-        price: 45000
+        name: "Doritos",
+        desc: "Doritos is an American brand of flavored tortilla chips, a wholly owned subsidiary of PepsiCo.",
+        image: Snack,
+        price: 11500
     },
     {
         id: 102,
-        name: "The Mamma Mia",
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
-        image: Burger1,
-        price: 35000
+        name: "Slai Olai",
+        desc: "Slai O'Lai sandwhich biscuit offers variety of delicious real fruit jam.",
+        image: Snack1,
+        price: 2000
     },
     {
         id: 103,
-        name: "The Isabella",
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
-        image: Burger2,
-        price: 23000
+        name: "Pop mie",
+        desc: "Pop Mie is an instant cup noodle brand which is a sub-brand of Indomie, first introduced in Indonesia in 1991. ",
+        image: Snack2,
+        price: 7000
     },
     {
         id: 104,
-        name: "Burger King",
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
-        image: Burger3,
-        price: 35000
+        name: "Nextar",
+        desc: "Nextar Nastar/Cookies are made from selected natural ingredients and the right composition to create a product that is rich in taste.",
+        image: Snack3,
+        price: 3000
     },
     {
         id: 105,
-        name: "Burger CrustyCrab",
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga dignissimos perspiciatis non, amet animi nam voluptatum officia alias",
-        image: Burger1,
-        price: 25000
+        name: "Aoka Bread",
+        desc: "AOKA Bread is a sandwich with a variety of delicious fillings that are perfectly baked with the savory butter. ",
+        image: Snack4,
+        price: 3000
     },
 ]
 
