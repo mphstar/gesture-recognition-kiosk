@@ -155,7 +155,7 @@ function App() {
                   isSelected={tabSelected == "Dessert" ? true : false}
                 />
               </div>
-              <div className="flex flex-col px-6 overflow-y-auto mt-4">
+              <div className="flex flex-col px-6 mt-4 border-l-[6px] duration-300 ease-in-out border-transparent pb-4">
                 <motion.h1
                   key={tabSelected}
                   initial={{ opacity: 0 }}
