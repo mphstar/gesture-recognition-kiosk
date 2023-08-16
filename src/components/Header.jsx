@@ -7,7 +7,7 @@ const Header = () => {
       
       <div className="px-8 py-10 h-full flex flex-col justify-center z-[2]">
         <p className="font-bold text-[1.5rem] w-full">Politeknik Negeri Jember Cafeteria</p>
-        <p className="">Sweet & Delicious Food</p>
+        <p className="">Team D Bintang, Iqbal, Pio, Yewon, Juyeol, Suin</p>
       </div>
       <div className="bg-black w-full h-full flex absolute z-[1] opacity-50"></div>
       <img className="object-cover w-full h-full absolute bg-yellow-400" src={Banner} alt="Banner" />
