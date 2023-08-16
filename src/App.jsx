@@ -1,8 +1,9 @@
 import Header from "./components/Header";
 import TabItems from "./components/TabItems";
 import Burger from "./assets/images/burger.png";
-import Drink from "./assets/images/drink.png";
-import Dessert from "./assets/images/dessert.png";
+import Snack from "./assets/images/doritos.png"
+import Drink from "./assets/images/pocari.png";
+import Dessert from "./assets/images/Fantasy-Jeruk.png";
 import Items from "./components/Items";
 import Cart from "./components/Cart";
 import { BsCartCheck } from "react-icons/bs";
@@ -21,7 +22,7 @@ import convertRupiah from "./utils/convertRupiah";
 function App() {
   const [isShowCart, ShowCart] = useState(false);
   const [DataShow, SetDataShow] = useState(ListData.burger);
-  const [tabSelected, SetTabSelected] = useState("Burger");
+  const [tabSelected, SetTabSelected] = useState("Snack");
   const [DataCart, SetDataCart] = useState({
     total_items: 0,
     price: 0,
@@ -137,10 +138,10 @@ function App() {
                 className="w-full h-full items-center lg:w-[480px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
                 <TabItems
-                  onclick={() => handleTab(ListData.burger, "Burger")}
-                  title={"Burger"}
-                  image={Burger}
-                  isSelected={tabSelected == "Burger" ? true : false}
+                  onclick={() => handleTab(ListData.burger, "Snack")}
+                  title={"Snack"}
+                  image={Snack}
+                  isSelected={tabSelected == "Snack" ? true : false}
                 />
                 <TabItems
                   onclick={() => handleTab(ListData.drink, "Drink")}
@@ -149,10 +150,10 @@ function App() {
                   isSelected={tabSelected == "Drink" ? true : false}
                 />
                 <TabItems
-                  onclick={() => handleTab(ListData.dessert, "Dessert")}
-                  title={"Dessert"}
+                  onclick={() => handleTab(ListData.dessert, "Ice cream")}
+                  title={"Icecream"}
                   image={Dessert}
-                  isSelected={tabSelected == "Dessert" ? true : false}
+                  isSelected={tabSelected == "Ice cream" ? true : false}
                 />
               </div>
               <div className="flex flex-col px-6 mt-4 border-l-[6px] duration-300 ease-in-out border-transparent pb-4">
