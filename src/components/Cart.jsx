@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import UrlServer from "../utils/urlServer";
 
 const Cart = () => {
-  const { DataCart, SetDataCart } = useContext(ItemContext);
+  const { DataCart, SetDataCart, ShowCart } = useContext(ItemContext);
   const CartContent = useRef(null);
 
   const handleQuantity = (option, key) => {
@@ -35,7 +35,7 @@ const Cart = () => {
   };
 
   const handlePay = () => {
-    if (DataCart.length != 0) {
+    if (DataCart.data.length != 0) {
       Swal.fire({
         title: "Information",
         text: "Are you sure to confirmation transaction?",
@@ -86,7 +86,7 @@ const Cart = () => {
   };
 
   const handleCancel = () => {
-    if (DataCart.length != 0) {
+    if (DataCart.data.length != 0) {
       Swal.fire({
         title: "Information",
         text: "Are you sure to cancel transaction?",

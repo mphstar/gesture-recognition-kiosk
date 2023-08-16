@@ -49,6 +49,10 @@ const Video = () => {
           focused: kontenItem,
           itemFocused: kontenItem.current.firstChild,
         });
+
+        kontenItem.current.parentElement.classList.remove('border-transparent')
+        kontenItem.current.parentElement.classList.add('border-orange-600')
+        
         kontenItem.current.firstChild.children[0].classList.add(
           "-translate-y-5"
         );
@@ -134,6 +138,9 @@ const Video = () => {
           IsFocus.itemFocused.children[0].classList.remove("-translate-y-5");
           IsFocus.itemFocused.children[1].classList.remove("border-orange-500");
           IsFocus.itemFocused.children[1].classList.remove("pt-8");
+
+          kontenItem.current.parentElement.classList.remove('border-orange-600')
+          kontenItem.current.parentElement.classList.add('border-transparent')
 
           SetFocus({
             ...IsFocus,
