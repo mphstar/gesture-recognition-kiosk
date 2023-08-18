@@ -50,9 +50,9 @@ const Video = () => {
           itemFocused: kontenItem.current.firstChild,
         });
 
-        kontenItem.current.parentElement.classList.remove('border-transparent')
-        kontenItem.current.parentElement.classList.add('border-orange-600')
-        
+        kontenItem.current.parentElement.classList.remove("border-transparent");
+        kontenItem.current.parentElement.classList.add("border-orange-600");
+
         kontenItem.current.firstChild.children[0].classList.add(
           "-translate-y-5"
         );
@@ -139,8 +139,10 @@ const Video = () => {
           IsFocus.itemFocused.children[1].classList.remove("border-orange-500");
           IsFocus.itemFocused.children[1].classList.remove("pt-8");
 
-          kontenItem.current.parentElement.classList.remove('border-orange-600')
-          kontenItem.current.parentElement.classList.add('border-transparent')
+          kontenItem.current.parentElement.classList.remove(
+            "border-orange-600"
+          );
+          kontenItem.current.parentElement.classList.add("border-transparent");
 
           SetFocus({
             ...IsFocus,
@@ -370,7 +372,29 @@ const Video = () => {
         } else if (nilai.hand == "Left" && nilai.gesture == "Thumb Up") {
           if (IsFocus.itemFocused) {
             // Decrease quantity
-            IsFocus.itemFocused.children[1].children[0].click();
+            if (
+              IsFocus.itemFocused ==
+              IsFocus.focused.current.firstChild.children[0].children[2]
+                .lastChild
+            ) {
+              if (IsFocus.itemFocused.children[1].children[1].innerHTML == 1) {
+                kontenCart.current.firstChild.children[0].children[2]
+                      .children[0].classList.add(
+                  "border-orange-600"
+                );
+
+                SetFocus({
+                  ...IsFocus,
+                  itemFocused:
+                    kontenCart.current.firstChild.children[0].children[2]
+                      .children[0],
+                });
+              }
+            }
+            
+            
+            IsFocus.itemFocused.children[1].children[0].click()
+
           }
         } else if (nilai.hand == "Right" && nilai.gesture == "Okay") {
           if (IsFocus.itemFocused) {

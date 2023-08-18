@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import UrlServer from "../utils/urlServer";
 
 const Cart = () => {
-  const { DataCart, SetDataCart, ShowCart } = useContext(ItemContext);
+  const { DataCart, SetDataCart, ShowCart, IsFocus, SetFocus } = useContext(ItemContext);
   const CartContent = useRef(null);
 
   const handleQuantity = (option, key) => {
@@ -58,8 +58,6 @@ const Cart = () => {
           });
 
           // Here send data cart to python
-          await sendData()
-
           SetDataCart({
             total_items: 0,
             price: 0,
@@ -67,6 +65,13 @@ const Cart = () => {
           });
 
           ShowCart(false);
+          SetFocus({
+            ...IsFocus,
+            description: "",
+            focused: null,
+          });
+          await sendData()
+
         }
       });
     }
@@ -106,6 +111,12 @@ const Cart = () => {
             draggable: true,
             progress: undefined,
             theme: "light",
+          });
+
+          SetFocus({
+            ...IsFocus,
+            description: "",
+            focused: null,
           });
 
           SetDataCart({
