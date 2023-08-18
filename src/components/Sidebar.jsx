@@ -50,8 +50,8 @@ const Sidebar = () => {
         </div>
         <div className="flex flex-col px-4 gap-4 lg:mt-0 h-full">
           <h1 className="mt-4 text-sm mb-1     ml-4">Menu</h1>
-          <a
-            href="/dashboard"
+          <Link
+            to="/dashboard"
             className="flex flex-row justify-between h-[48px] cursor-pointer menu flex-none bg-orange-400 text-white px-4 rounded-md"
           >
             <div className="flex flex-row items-center w-full">
@@ -70,7 +70,7 @@ const Sidebar = () => {
                 Dashboard
               </p>
             </div>
-          </a>
+          </Link>
           <div
             id="div_master"
             className="h-fit flex flex-col w-full overflow-hidden duration-300 px-4 ease-in-out"

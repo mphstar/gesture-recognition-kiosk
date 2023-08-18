@@ -12,7 +12,7 @@ const Dashboard = () => {
           <Sidebar />
         </div>
         <div className="flex w-full md:ml-[390px] lg:ml-[290px] duration-300 ease-in-out px-4 py-4 border-b-[2px]">
-          <HeaderAdmin />
+          <HeaderAdmin title="Dashboard" />
         </div>
       </div>
     </AdminContext.Provider>
