@@ -4,7 +4,7 @@ import KNU from "../assets/images/knu.png";
 import { Link } from "react-router-dom";
 import AdminContext from "../utils/AdminContext";
 
-const Sidebar = () => {
+const Sidebar = ({active}) => {
   const { IsShow, SetIsShow } = useContext(AdminContext);
 
 
@@ -25,7 +25,7 @@ const Sidebar = () => {
       <div
         className={`flex flex-col w-[80%] ${
           IsShow ? "translate-x-0" : "-translate-x-[400px]"
-        }  md:translate-x-0 duration-500 ease-in-out max-w-[400px] md:w-[390px] lg:w-[290px] h-full bg-white border-r-[1px] border-r-[#DCDADA] box-border fixed z-[100] pb-10 2xl:pb-10 overflow-y-auto md:scrollbar-hide`}
+        }  md:translate-x-0 duration-500 ease-in-out max-w-[400px] md:w-[320px] lg:w-[290px] h-full bg-white border-r-[1px] border-r-[#DCDADA] box-border fixed z-[100] pb-10 2xl:pb-10 overflow-y-auto md:scrollbar-hide`}
         id="sidebar"
       >
         <div className="flex flex-col w-full h-auto py-6 px-8">
@@ -52,11 +52,11 @@ const Sidebar = () => {
           <h1 className="mt-4 text-sm mb-1     ml-4">Menu</h1>
           <Link
             to="/dashboard"
-            className="flex flex-row justify-between h-[48px] cursor-pointer menu flex-none bg-orange-400 text-white px-4 rounded-md"
+            className={`flex flex-row justify-between h-[48px] cursor-pointer menu flex-none ${active == "Dashboard" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} px-4 rounded-md`}
           >
             <div className="flex flex-row items-center w-full">
               <svg
-                className="w-6 h-6 fill-white transition ease-in-out"
+                className={`w-6 h-6 ${active == "Dashboard" ? 'fill-white' : 'fill-black'} transition ease-in-out`}
                 width="34"
                 height="34"
                 viewBox="0 0 34 34"
@@ -102,7 +102,7 @@ const Sidebar = () => {
               </div>
               <div className="flex w-full flex-col flex-grow px-0 cursor-default">
                 <Link to="/products/snack">
-                  <div className="bg-white text-primary hover:bg-gray-200 text-sm py-2 px-2 rounded-md w-full">
+                  <div className={`${active == "Snack" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} text-primary  text-sm py-2 px-2 rounded-md w-full`}>
                     <div className="flex flex-row justify-between items-center">
                       <p>Snack</p>
                       <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
@@ -112,7 +112,7 @@ const Sidebar = () => {
                   </div>
                 </Link>
                 <a href="#">
-                  <div className="bg-white text-primary hover:bg-gray-200 text-sm py-2 px-2 rounded-md w-full">
+                  <div className={`${active == "Drink" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} text-primary  text-sm py-2 px-2 rounded-md w-full`}>
                     <div className="flex flex-row justify-between items-center">
                       <p>Drink</p>
                       <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
@@ -122,7 +122,7 @@ const Sidebar = () => {
                   </div>
                 </a>
                 <a href="#">
-                  <div className="bg-white text-primary hover:bg-gray-200 text-sm py-2 px-2 rounded-md w-full">
+                  <div className={`${active == "Icecream" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} text-primary  text-sm py-2 px-2 rounded-md w-full`}>
                     <div className="flex flex-row justify-between items-center">
                       <p>Icecream</p>
                       <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
@@ -136,7 +136,7 @@ const Sidebar = () => {
           </div>
           <a
             href="/riwayat"
-            className="flex flex-row justify-between h-fit py-3 cursor-pointer menu flex-none px-4 hover:bg-gray-200 rounded-md"
+            className={`flex flex-row justify-between h-fit py-3 cursor-pointer menu flex-none px-4 ${active == "History" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} rounded-md`}
           >
             <div className="flex flex-row items-center w-full">
               <svg
