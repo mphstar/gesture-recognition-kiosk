@@ -12,7 +12,7 @@ const DialogProducts = ({option}) => {
     <>
       <div onClick={handleClose} className={`h-screen w-screen fixed bg-black ${DialogShow ? 'opacity-30 pointer-events-auto' : 'opacity-0 pointer-events-none'} duration-300 ease-in-out z-[200]`}></div>
       <div className={`flex flex-col w-[90%] h-[90%] max-w-[500px] ${DialogShow ? 'scale-100' : 'scale-0'} duration-300 ease-in-out fixed bg-white z-[201] right-[50%] top-[50%] translate-x-[50%] -translate-y-[50%] rounded-lg`}>
-        <div className="flex w-full py-6 px-6 flex-row justify-between items-center border-b-[2px] sticky top-0 bg-white">
+        <div className="flex w-full py-6 px-6 flex-row justify-between items-center border-b-[2px]">
           <h1 className="font-semibold">{option} Data</h1>
           <div onClick={handleClose} className="flex px-2 bg-red-600 h-fit w-fit text-white rounded-md">
             <p>x</p>
