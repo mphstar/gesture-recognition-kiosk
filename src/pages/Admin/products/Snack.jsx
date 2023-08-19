@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderAdmin from "../../../components/HeaderAdmin";
 import Sidebar from "../../../components/Sidebar";
 import AdminContext from "../../../utils/AdminContext";
 import { MdEditDocument, MdDelete } from "react-icons/md";
 import Snack1 from "../../../assets/images/doritos.png";
 import DialogProducts from "../../../components/DialogProducts";
+import useSWR, { mutate } from "swr";
+import fetcher from "../../../utils/Fetcher";
+import UrlServer from "../../../utils/urlServer";
+import convertRupiah from "../../../utils/convertRupiah";
 
 const Snack = () => {
   const [IsShow, SetIsShow] = useState(false);
   const [DialogShow, SetDialog] = useState(false);
   const [OptionDialog, SetOptionDialog] = useState("Add");
+
+  const { data, isLoading, error } = useSWR(
+    `${UrlServer}/api/getProduct`,
+    fetcher
+  );
 
   return (
     <AdminContext.Provider value={{ IsShow, SetIsShow, DialogShow, SetDialog }}>
@@ -99,7 +108,9 @@ const Snack = () => {
                 type="text"
               />
               <div className="flex flex-row gap-2 cursor-default mt-4 md:mt-0">
-                <div className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center">
+                <div onClick={() => {
+                  mutate(`${UrlServer}/api/getProduct`)
+                }} className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center">
                   <p>Delete</p>
                 </div>
                 <div
@@ -134,141 +145,87 @@ const Snack = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-gray-100 rounded-xl">
-                  <tr>
-                    <td className="px-4 w-16 text-center">
-                      <div className="">
-                        <input
-                          className="h-4 w-4"
-                          type="checkbox"
-                          name=""
-                          id=""
-                        />
-                      </div>
-                    </td>
-                    <td className="text-left px-4">
-                      <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
-                        <div className="w-16 h-fit">
-                          <img
-                            className="w-full h-full object-cover"
-                            src={Snack1}
-                            alt="snack"
-                          />
-                        </div>
-                        <div>Doritos</div>
-                      </div>
-                    </td>
-                    <td className="text-left px-4">Rp. 11.500</td>
-                    <td className="text-left px-4">
-                      Doritos is an American brand of flavored tortilla chips, a
-                      wholly owned subsidiary of PepsiCo.
-                    </td>
-                    <td>
-                      <div className="flex flex-row gap-2">
-                        <div
-                          onClick={() => {
-                            SetOptionDialog("Update");
-                            SetDialog(true);
-                          }}
-                          className="flex bg-orange-400 px-3 py-3 rounded-md"
-                        >
-                          <MdEditDocument color="white" />
-                        </div>
-                        <div className="flex bg-red-600 px-3 py-3 rounded-md">
-                          <MdDelete color="white" />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 w-16 text-center">
-                      <div className="">
-                        <input
-                          className="h-4 w-4"
-                          type="checkbox"
-                          name=""
-                          id=""
-                        />
-                      </div>
-                    </td>
-                    <td className="text-left px-4">
-                      <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
-                        <div className="w-16 h-fit">
-                          <img
-                            className="w-full h-full object-cover"
-                            src={Snack1}
-                            alt="snack"
-                          />
-                        </div>
-                        <div>Doritos</div>
-                      </div>
-                    </td>
-                    <td className="text-left px-4">Rp. 11.500</td>
-                    <td className="text-left px-4">
-                      Doritos is an American brand of flavored tortilla chips, a
-                      wholly owned subsidiary of PepsiCo.
-                    </td>
-                    <td>
-                      <div className="flex flex-row gap-2">
-                        <div
-                          onClick={() => {
-                            SetOptionDialog("Update");
-                            SetDialog(true);
-                          }}
-                          className="flex bg-orange-400 px-3 py-3 rounded-md"
-                        >
-                          <MdEditDocument color="white" />
-                        </div>
-                        <div className="flex bg-red-600 px-3 py-3 rounded-md">
-                          <MdDelete color="white" />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 w-16 text-center">
-                      <div className="">
-                        <input
-                          className="h-4 w-4"
-                          type="checkbox"
-                          name=""
-                          id=""
-                        />
-                      </div>
-                    </td>
-                    <td className="text-left px-4">
-                      <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
-                        <div className="w-16 h-fit">
-                          <img
-                            className="w-full h-full object-cover"
-                            src={Snack1}
-                            alt="snack"
-                          />
-                        </div>
-                        <div>Doritos</div>
-                      </div>
-                    </td>
-                    <td className="text-left px-4">Rp. 11.500</td>
-                    <td className="text-left px-4">
-                      Doritos is an American brand of flavored tortilla chips, a
-                      wholly owned subsidiary of PepsiCo.
-                    </td>
-                    <td>
-                      <div className="flex flex-row gap-2">
-                        <div
-                          onClick={() => {
-                            SetOptionDialog("Update");
-                            SetDialog(true);
-                          }}
-                          className="flex bg-orange-400 px-3 py-3 rounded-md"
-                        >
-                          <MdEditDocument color="white" />
-                        </div>
-                        <div className="flex bg-red-600 px-3 py-3 rounded-md">
-                          <MdDelete color="white" />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
+                  {!error ? (
+                    isLoading ? (
+                      <>
+                        <tr>
+                          <td
+                            className="line loading-shimmer"
+                            colSpan="5'"
+                          ></td>
+                        </tr>
+                        <tr>
+                          <td
+                            className="line loading-shimmer"
+                            colSpan="5'"
+                          ></td>
+                        </tr>
+                        <tr>
+                          <td
+                            className="line loading-shimmer"
+                            colSpan="5'"
+                          ></td>
+                        </tr>
+                      </>
+                    ) : (
+                      data.products.snack.map((item, index) => {
+                        return (
+                          <tr key={index}>
+                            <td className="px-4 w-16 text-center">
+                              <div className="">
+                                <input
+                                  className="h-4 w-4"
+                                  type="checkbox"
+                                  name=""
+                                  id=""
+                                />
+                              </div>
+                            </td>
+                            <td className="text-left px-4">
+                              <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
+                                <div className="w-16 h-fit">
+                                  <img
+                                    className="w-full h-full object-cover"
+                                    src={Snack1}
+                                    alt="snack"
+                                  />
+                                </div>
+                                <div>{item.name}</div>
+                              </div>
+                            </td>
+                            <td className="text-left px-4">
+                              {convertRupiah.formatPrice(item.price)}
+                            </td>
+                            <td className="text-left px-4">
+                              {item.description}
+                            </td>
+                            <td>
+                              <div className="flex flex-row gap-2">
+                                <div
+                                  onClick={() => {
+                                    SetOptionDialog("Update");
+                                    SetDialog(true);
+                                  }}
+                                  className="flex bg-orange-400 px-3 py-3 rounded-md"
+                                >
+                                  <MdEditDocument color="white" />
+                                </div>
+                                <div className="flex bg-red-600 px-3 py-3 rounded-md">
+                                  <MdDelete color="white" />
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )
+                  ) : (
+                    <tr>
+                      <td className="py-4 text-center" colSpan={5} rowSpan={5}>
+                        Not connected to Server
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
