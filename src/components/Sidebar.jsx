@@ -121,7 +121,7 @@ const Sidebar = ({ active }) => {
                     </div>
                   </div>
                 </Link>
-                <a href="#">
+                <Link to="/products/drink">
                   <div
                     className={`${
                       active == "Drink"
@@ -136,8 +136,8 @@ const Sidebar = ({ active }) => {
                       </div> */}
                     </div>
                   </div>
-                </a>
-                <a href="#">
+                </Link>
+                <Link to="/products/icecream">
                   <div
                     className={`${
                       active == "Icecream"
@@ -152,7 +152,7 @@ const Sidebar = ({ active }) => {
                       </div> */}
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

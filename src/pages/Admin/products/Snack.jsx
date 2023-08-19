@@ -4,11 +4,16 @@ import Sidebar from "../../../components/Sidebar";
 import AdminContext from "../../../utils/AdminContext";
 import { MdEditDocument, MdDelete } from "react-icons/md";
 import Snack1 from "../../../assets/images/doritos.png";
+import DialogProducts from "../../../components/DialogProducts";
 
 const Snack = () => {
   const [IsShow, SetIsShow] = useState(false);
+  const [DialogShow, SetDialog] = useState(false);
+  const [OptionDialog, SetOptionDialog] = useState("Add");
+
   return (
-    <AdminContext.Provider value={{ IsShow, SetIsShow }}>
+    <AdminContext.Provider value={{ IsShow, SetIsShow, DialogShow, SetDialog }}>
+      <DialogProducts option={OptionDialog} />
       <div className="">
         <div className="">
           <Sidebar active="Snack" />
@@ -16,15 +21,18 @@ const Snack = () => {
         <div className="flex flex-col w-full md:pl-[320px] lg:pl-[290px] min-h-screen duration-300 ease-in-out">
           <HeaderAdmin title="Products" />
           <div className="h-fit flex-grow flex flex-col py-4 px-6 md:px-12 bg-gray-100">
-            <nav class="flex mt-0 overflow-x-auto py-4" aria-label="Breadcrumb">
-              <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
+            <nav
+              className="flex mt-0 overflow-x-auto py-4"
+              aria-label="Breadcrumb"
+            >
+              <ol className="inline-flex items-center space-x-1 md:space-x-3">
+                <li className="inline-flex items-center">
                   <a
                     href="#"
-                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-orange-600 dark:text-gray-400 dark:hover:text-white"
+                    className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-orange-600 dark:text-gray-400 dark:hover:text-white"
                   >
                     <svg
-                      class="w-3 h-3 mr-2.5"
+                      className="w-3 h-3 mr-2.5"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -36,9 +44,9 @@ const Snack = () => {
                   </a>
                 </li>
                 <li>
-                  <div class="flex items-center">
+                  <div className="flex items-center">
                     <svg
-                      class="w-3 h-3 text-gray-400 mx-1"
+                      className="w-3 h-3 text-gray-400 mx-1"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -46,24 +54,24 @@ const Snack = () => {
                     >
                       <path
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="m1 9 4-4-4-4"
                       />
                     </svg>
                     <a
                       href="#"
-                      class="ml-1 text-sm font-medium text-gray-700 hover:text-orange-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                      className="ml-1 text-sm font-medium text-gray-700 hover:text-orange-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
                     >
                       Products
                     </a>
                   </div>
                 </li>
                 <li aria-current="page">
-                  <div class="flex items-center">
+                  <div className="flex items-center">
                     <svg
-                      class="w-3 h-3 text-gray-400 mx-1"
+                      className="w-3 h-3 text-gray-400 mx-1"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -71,13 +79,13 @@ const Snack = () => {
                     >
                       <path
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="m1 9 4-4-4-4"
                       />
                     </svg>
-                    <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+                    <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
                       Snack
                     </span>
                   </div>
@@ -94,7 +102,13 @@ const Snack = () => {
                 <div className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center">
                   <p>Delete</p>
                 </div>
-                <div className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white rounded-md items-center justify-center">
+                <div
+                  onClick={() => {
+                    SetOptionDialog("Add");
+                    SetDialog(true);
+                  }}
+                  className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white rounded-md items-center justify-center"
+                >
                   <p>Add Product</p>
                 </div>
               </div>
@@ -150,7 +164,13 @@ const Snack = () => {
                     </td>
                     <td>
                       <div className="flex flex-row gap-2">
-                        <div className="flex bg-orange-400 px-3 py-3 rounded-md">
+                        <div
+                          onClick={() => {
+                            SetOptionDialog("Update");
+                            SetDialog(true);
+                          }}
+                          className="flex bg-orange-400 px-3 py-3 rounded-md"
+                        >
                           <MdEditDocument color="white" />
                         </div>
                         <div className="flex bg-red-600 px-3 py-3 rounded-md">
@@ -189,7 +209,13 @@ const Snack = () => {
                     </td>
                     <td>
                       <div className="flex flex-row gap-2">
-                        <div className="flex bg-orange-400 px-3 py-3 rounded-md">
+                        <div
+                          onClick={() => {
+                            SetOptionDialog("Update");
+                            SetDialog(true);
+                          }}
+                          className="flex bg-orange-400 px-3 py-3 rounded-md"
+                        >
                           <MdEditDocument color="white" />
                         </div>
                         <div className="flex bg-red-600 px-3 py-3 rounded-md">
@@ -228,7 +254,13 @@ const Snack = () => {
                     </td>
                     <td>
                       <div className="flex flex-row gap-2">
-                        <div className="flex bg-orange-400 px-3 py-3 rounded-md">
+                        <div
+                          onClick={() => {
+                            SetOptionDialog("Update");
+                            SetDialog(true);
+                          }}
+                          className="flex bg-orange-400 px-3 py-3 rounded-md"
+                        >
                           <MdEditDocument color="white" />
                         </div>
                         <div className="flex bg-red-600 px-3 py-3 rounded-md">
