@@ -8,6 +8,7 @@ import Dessert from "../../assets/images/Fantasy-Jeruk.png";
 import ReactApexChart from "react-apexcharts";
 
 import Snack1 from "../../assets/images/slai-olai.png";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [IsShow, SetIsShow] = useState(false);
@@ -48,9 +49,9 @@ const Dashboard = () => {
         <div className="flex flex-col w-full md:pl-[320px] lg:pl-[290px] min-h-screen duration-300 ease-in-out">
           <HeaderAdmin title="Dashboard" />
           <div className="h-fit flex-grow flex flex-col py-4 px-6 md:px-12 bg-gray-100">
-            <p className="h-fit text-xl font-bold">List Products</p>
+            <p className="h-fit text-xl font-bold mt-4">List Products</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full h-fit mt-6 gap-4">
-              <div className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
+              <Link to={'/products/snack'} className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
                 <div className="flex flex-col lg:flex-row gap-2 w-full items-center">
                   <div className="w-20 lg:w-40 h-fit">
                     <img
@@ -69,7 +70,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
               <div className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
                 <div className="flex flex-col lg:flex-row gap-2 w-full items-center">
                   <div className="w-20 lg:w-40 h-fit">

@@ -4,24 +4,22 @@ import KNU from "../assets/images/knu.png";
 import { Link } from "react-router-dom";
 import AdminContext from "../utils/AdminContext";
 
-const Sidebar = ({active}) => {
+const Sidebar = ({ active }) => {
   const { IsShow, SetIsShow } = useContext(AdminContext);
-
 
   useEffect(() => {
     const handleResize = () => {
-        window.innerWidth >= 768 ? SetIsShow(false) : undefined
-    }
-    window.addEventListener('resize', handleResize)
+      window.innerWidth >= 768 ? SetIsShow(false) : undefined;
+    };
+    window.addEventListener("resize", handleResize);
 
     return () => {
-        window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
-      
       <div
         className={`flex flex-col w-[80%] ${
           IsShow ? "translate-x-0" : "-translate-x-[400px]"
@@ -49,14 +47,20 @@ const Sidebar = ({active}) => {
           </div>
         </div>
         <div className="flex flex-col px-4 gap-4 lg:mt-0 h-full">
-          <h1 className="mt-4 text-sm mb-1     ml-4">Menu</h1>
+          <h1 className="mt-4 text-sm ml-4">Home</h1>
           <Link
             to="/dashboard"
-            className={`flex flex-row justify-between h-[48px] cursor-pointer menu flex-none ${active == "Dashboard" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} px-4 rounded-md`}
+            className={`flex flex-row justify-between h-[48px] cursor-pointer menu flex-none ${
+              active == "Dashboard"
+                ? "bg-orange-400 text-white"
+                : "hover:bg-gray-200"
+            } px-4 rounded-md`}
           >
             <div className="flex flex-row items-center w-full">
               <svg
-                className={`w-6 h-6 ${active == "Dashboard" ? 'fill-white' : 'fill-black'} transition ease-in-out`}
+                className={`w-6 h-6 ${
+                  active == "Dashboard" ? "fill-white" : "fill-black"
+                } transition ease-in-out`}
                 width="34"
                 height="34"
                 viewBox="0 0 34 34"
@@ -102,32 +106,50 @@ const Sidebar = ({active}) => {
               </div>
               <div className="flex w-full flex-col flex-grow px-0 cursor-default">
                 <Link to="/products/snack">
-                  <div className={`${active == "Snack" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} text-primary  text-sm py-2 px-2 rounded-md w-full`}>
+                  <div
+                    className={`${
+                      active == "Snack"
+                        ? "bg-orange-400 text-white"
+                        : "hover:bg-gray-200"
+                    } text-primary  text-sm py-2 px-2 rounded-md w-full`}
+                  >
                     <div className="flex flex-row justify-between items-center">
                       <p>Snack</p>
-                      <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
+                      {/* <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
                         6
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </Link>
                 <a href="#">
-                  <div className={`${active == "Drink" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} text-primary  text-sm py-2 px-2 rounded-md w-full`}>
+                  <div
+                    className={`${
+                      active == "Drink"
+                        ? "bg-orange-400 text-white"
+                        : "hover:bg-gray-200"
+                    } text-primary  text-sm py-2 px-2 rounded-md w-full`}
+                  >
                     <div className="flex flex-row justify-between items-center">
                       <p>Drink</p>
-                      <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
+                      {/* <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
                         4
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </a>
                 <a href="#">
-                  <div className={`${active == "Icecream" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} text-primary  text-sm py-2 px-2 rounded-md w-full`}>
+                  <div
+                    className={`${
+                      active == "Icecream"
+                        ? "bg-orange-400 text-white"
+                        : "hover:bg-gray-200"
+                    } text-primary  text-sm py-2 px-2 rounded-md w-full`}
+                  >
                     <div className="flex flex-row justify-between items-center">
                       <p>Icecream</p>
-                      <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
+                      {/* <div className="bg-blue-500 h-5 w-5 flex justify-center items-center rounded-md text-white text-xs">
                         10
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </a>
@@ -136,7 +158,11 @@ const Sidebar = ({active}) => {
           </div>
           <a
             href="/riwayat"
-            className={`flex flex-row justify-between h-fit py-3 cursor-pointer menu flex-none px-4 ${active == "History" ? 'bg-orange-400 text-white' : 'hover:bg-gray-200'} rounded-md`}
+            className={`flex flex-row justify-between h-fit py-3 cursor-pointer menu flex-none px-4 ${
+              active == "History"
+                ? "bg-orange-400 text-white"
+                : "hover:bg-gray-200"
+            } rounded-md`}
           >
             <div className="flex flex-row items-center w-full">
               <svg
@@ -164,7 +190,12 @@ const Sidebar = ({active}) => {
           </a>
         </div>
       </div>
-      <div onClick={() => SetIsShow(false)} className={`w-screen fixed h-screen flex bg-black z-[98] ${IsShow ? 'opacity-30 pointer-events-auto' : 'opacity-0'} duration-500 ease-in-out pointer-events-none`}></div>
+      <div
+        onClick={() => SetIsShow(false)}
+        className={`w-screen fixed h-screen flex bg-black z-[98] ${
+          IsShow ? "opacity-30 pointer-events-auto" : "opacity-0"
+        } duration-500 ease-in-out pointer-events-none`}
+      ></div>
     </>
   );
 };
