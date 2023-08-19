@@ -34,3 +34,8 @@ body {
 .scroll-cart::-webkit-scrollbar-thumb:hover {
     @apply bg-orange-700
 }
+
+label::after {
+    content: '*';
+    @apply text-red-600 pl-2
+}

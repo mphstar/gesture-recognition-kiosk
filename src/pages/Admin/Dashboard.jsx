@@ -71,7 +71,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </Link>
-              <div className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
+              <Link to={'/products/drink'} className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
                 <div className="flex flex-col lg:flex-row gap-2 w-full items-center">
                   <div className="w-20 lg:w-40 h-fit">
                     <img
@@ -90,8 +90,8 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
+              </Link>
+              <Link to={'/products/icecream'} className="bg-white rounded-lg w-full h-[250px] lg:h-[200px] flex items-center px-4 py-8 border-[2px] hover:border-orange-600 duration-300 ease-in-out relative">
                 <div className="flex flex-col lg:flex-row gap-2 w-full items-center">
                   <div className="w-20 lg:w-40 h-fit">
                     <img
@@ -110,7 +110,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full mt-8">
               <div className="flex flex-col col-span-2">

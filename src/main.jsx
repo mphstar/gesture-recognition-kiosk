@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";
 import Snack from "./pages/Admin/products/Snack.jsx";
+import Drink from "./pages/Admin/products/Drink.jsx";
+import Ice from "./pages/Admin/products/Ice.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,12 @@ const router = createBrowserRouter([
   {
     path: "/products/snack",
     element: <Snack />
+  },{
+    path: "/products/drink",
+    element: <Drink />
+  },{
+    path: "/products/icecream",
+    element: <Ice />
   }
 
 ]);
