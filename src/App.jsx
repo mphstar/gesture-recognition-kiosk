@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import TabItems from "./components/TabItems";
 import Burger from "./assets/images/burger.png";
-import Snack from "./assets/images/doritos.png"
+import Snack from "./assets/images/doritos.png";
 import Drink from "./assets/images/pocari.png";
 import Dessert from "./assets/images/Fantasy-Jeruk.png";
 import Items from "./components/Items";
@@ -18,10 +18,16 @@ import Swal from "sweetalert2";
 import { socket } from "./utils/socket";
 import Video from "./components/Video";
 import convertRupiah from "./utils/convertRupiah";
+import UrlServer from "./utils/urlServer";
+
+import useSWR, { mutate } from "swr";
+import fetcher from "./utils/Fetcher";
 
 function App() {
+  const url = `${UrlServer}/api/getProduct`;
+  const { data, isLoading, error } = useSWR(url, fetcher);
+
   const [isShowCart, ShowCart] = useState(false);
-  const [DataShow, SetDataShow] = useState(ListData.burger);
   const [tabSelected, SetTabSelected] = useState("Snack");
   const [DataCart, SetDataCart] = useState({
     total_items: 0,
@@ -40,8 +46,7 @@ function App() {
     focused: null,
   });
 
-  const handleTab = (data, category) => {
-    SetDataShow(data);
+  const handleTab = (category) => {
     SetTabSelected(category);
   };
 
@@ -103,6 +108,25 @@ function App() {
     return () => {};
   }, [IsConnected]);
 
+  if (isLoading) {
+    return (
+      <div
+        id="loading"
+        className="fixed w-full h-full top-0 left-0 flex flex-col justify-center items-center bg-slate-50 z-[99999]"
+      >
+        <div className="loadingspinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="fixed w-full h-full top-0 left-0 flex flex-col justify-center items-center bg-slate-50 z-[99999]">
+        <div className="">Not Connected to Server</div>
+      </div>
+    );
+  }
+
   return (
     <ItemContext.Provider
       value={{
@@ -138,19 +162,19 @@ function App() {
                 className="w-full h-full items-center lg:w-[200px] px-4 py-4 duration-300 ease-in-out border-l-[6px] border-transparent flex gap-2 justify-start lg:justify-center flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden"
               >
                 <TabItems
-                  onclick={() => handleTab(ListData.burger, "Snack")}
+                  onclick={() => handleTab("Snack")}
                   title={"Snack"}
                   image={Snack}
                   isSelected={tabSelected == "Snack" ? true : false}
                 />
                 <TabItems
-                  onclick={() => handleTab(ListData.drink, "Drink")}
+                  onclick={() => handleTab("Drink")}
                   title={"Drink"}
                   image={Drink}
                   isSelected={tabSelected == "Drink" ? true : false}
                 />
                 <TabItems
-                  onclick={() => handleTab(ListData.dessert, "Ice cream")}
+                  onclick={() => handleTab("Ice cream")}
                   title={"Icecream"}
                   image={Dessert}
                   isSelected={tabSelected == "Ice cream" ? true : false}
@@ -171,12 +195,17 @@ function App() {
                     ref={kontenItem}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3"
                   >
-                    {DataShow.map((value, index) => {
+                    {(tabSelected == "Snack"
+                      ? data.products.snack.data
+                      : tabSelected == "Drink"
+                      ? data.products.drink.data
+                      : data.products.icecream.data
+                    ).map((value, index) => {
                       return (
                         <Items
                           onclick={() => handleCart(value)}
                           name={value.name}
-                          desc={value.desc}
+                          desc={value.description}
                           price={value.price}
                           image={value.image}
                           key={value.id}
