@@ -3,25 +3,169 @@ import HeaderAdmin from "../../../components/HeaderAdmin";
 import Sidebar from "../../../components/Sidebar";
 import AdminContext from "../../../utils/AdminContext";
 import { MdEditDocument, MdDelete } from "react-icons/md";
-import Snack1 from "../../../assets/images/doritos.png";
 import DialogProducts from "../../../components/DialogProducts";
 import useSWR, { mutate } from "swr";
 import fetcher from "../../../utils/Fetcher";
 import UrlServer from "../../../utils/urlServer";
 import convertRupiah from "../../../utils/convertRupiah";
+import Pagination from "../../../components/Pagination";
+import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 const Snack = () => {
   const [IsShow, SetIsShow] = useState(false);
   const [DialogShow, SetDialog] = useState(false);
   const [OptionDialog, SetOptionDialog] = useState("Add");
+  const [page, SetPage] = useState(1);
+  const [limit, SetLimit] = useState(6);
+  const [search, SetSearch] = useState("");
 
-  const { data, isLoading, error } = useSWR(
-    `${UrlServer}/api/getProduct`,
-    fetcher
-  );
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  const [dataSelected, SetDataSelected] = useState();
+  const [category, SetCategory] = useState(1)
+
+  useEffect(() => {
+    setSelectedRows([]);
+    setSelectAll(false);
+  }, [page]);
+
+  const refreshPage = () => {
+    SetPage(1);
+    SetSearch("");
+  };
+
+  const handleCheckboxChange = (id) => {
+    if (selectedRows.includes(id)) {
+      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
+    } else {
+      setSelectedRows([...selectedRows, id]);
+    }
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(data.products.snack.data.map((item) => item.id));
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const url = `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`;
+
+  const { data, isLoading, error } = useSWR(url, fetcher);
+
+  const handleDelete = (item) => {
+    Swal.fire({
+      title: "Question?",
+      text: `Are you sure to Delete Data?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
+          allowOutsideClick: false,
+          showConfirmButton: false,
+        });
+
+        const result = await fetch(`${UrlServer}/api/product/delete`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: item.id, image_path: item.image }), // Ganti dengan data yang ingin Anda kirim
+        });
+
+        if (result.ok) {
+          Swal.fire("Success", `Delete Data Success`, "success").then(() => {
+            mutate(url);
+            SetDialog(false);
+          });
+        } else {
+          Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
+            mutate(url);
+            SetDialog(false);
+          });
+        }
+      }
+    });
+  };
+
+  const handleDeleteSelection = () => {
+    if (selectedRows.length == 0) {
+      Swal.fire("Information", `Select One Data or More First`, "warning");
+    } else {
+      Swal.fire({
+        title: "Question?",
+        text: `Are you sure to Delete Data?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Loading",
+            html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
+            allowOutsideClick: false,
+            showConfirmButton: false,
+          });
+
+          const result = await fetch(
+            `${UrlServer}/api/product/deleteSelection`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ id: selectedRows }), // Ganti dengan data yang ingin Anda kirim
+            }
+          );
+
+          if (result.ok) {
+            Swal.fire("Success", `Delete Data Success`, "success").then(() => {
+              mutate(url);
+              refreshPage();
+              setSelectAll(false);
+              setSelectedRows([]);
+              SetDialog(false);
+            });
+          } else {
+            Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
+              mutate(url);
+              refreshPage();
+              setSelectAll(false);
+              setSelectedRows([]);
+              SetDialog(false);
+            });
+          }
+        }
+      });
+    }
+  };
 
   return (
-    <AdminContext.Provider value={{ IsShow, SetIsShow, DialogShow, SetDialog }}>
+    <AdminContext.Provider
+      value={{
+        IsShow,
+        SetIsShow,
+        DialogShow,
+        SetDialog,
+        url,
+        refreshPage,
+        dataSelected,
+        SetDataSelected,
+        category
+      }}
+    >
       <DialogProducts option={OptionDialog} />
       <div className="">
         <div className="">
@@ -103,14 +247,22 @@ const Snack = () => {
             </nav>
             <div className="flex flex-col md:flex-row w-full h-fit mt-2 justify-between gap-4">
               <input
+                onChange={(e) => {
+                  SetPage(1);
+                  SetSearch(e.target.value);
+                }}
                 className="py-2 px-6 border-[2px] rounded-lg outline-none w-full md:flex-1 md:max-w-[400px]"
                 placeholder="Search..."
                 type="text"
+                value={search}
               />
               <div className="flex flex-row gap-2 cursor-default mt-4 md:mt-0">
-                <div onClick={() => {
-                  mutate(`${UrlServer}/api/getProduct`)
-                }} className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center">
+                <div
+                  onClick={() => {
+                    handleDeleteSelection();
+                  }}
+                  className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center"
+                >
                   <p>Delete</p>
                 </div>
                 <div
@@ -124,7 +276,12 @@ const Snack = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex flex-col bg-white flex-grow mt-8 rounded-lg px-6 py-4 border-[2px] overflow-x-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="w-full h-full flex flex-col bg-white flex-grow mt-8 rounded-lg px-6 py-4 border-[2px] overflow-x-auto"
+            >
               <table className="border-separate border-spacing-y-3">
                 <thead>
                   <tr>
@@ -133,6 +290,8 @@ const Snack = () => {
                         <input
                           className="h-4 w-4"
                           type="checkbox"
+                          onChange={handleSelectAll}
+                          checked={selectAll}
                           name=""
                           id=""
                         />
@@ -167,26 +326,43 @@ const Snack = () => {
                           ></td>
                         </tr>
                       </>
+                    ) : data.products.snack.data.length == 0 ? (
+                      <tr>
+                        <td
+                          className="py-4 text-center"
+                          colSpan={5}
+                          rowSpan={5}
+                        >
+                          Data Not Found
+                        </td>
+                      </tr>
                     ) : (
-                      data.products.snack.map((item, index) => {
+                      data.products.snack.data.map((item, index) => {
                         return (
-                          <tr key={index}>
+                          <motion.tr
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            key={item.id}
+                          >
                             <td className="px-4 w-16 text-center">
                               <div className="">
                                 <input
                                   className="h-4 w-4"
                                   type="checkbox"
+                                  onChange={() => handleCheckboxChange(item.id)}
+                                  checked={selectedRows.includes(item.id)}
                                   name=""
                                   id=""
                                 />
                               </div>
                             </td>
-                            <td className="text-left px-4">
+                            <td className="text-left px-4 py-2">
                               <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
-                                <div className="w-16 h-fit">
+                                <div className="w-16 h-16">
                                   <img
-                                    className="w-full h-full object-cover"
-                                    src={Snack1}
+                                    className="w-full h-full object-contain"
+                                    src={`${UrlServer}/uploads/${item.image}`}
                                     alt="snack"
                                   />
                                 </div>
@@ -199,23 +375,29 @@ const Snack = () => {
                             <td className="text-left px-4">
                               {item.description}
                             </td>
-                            <td>
+                            <td className="px-4">
                               <div className="flex flex-row gap-2">
                                 <div
                                   onClick={() => {
                                     SetOptionDialog("Update");
+                                    SetDataSelected(item);
                                     SetDialog(true);
                                   }}
                                   className="flex bg-orange-400 px-3 py-3 rounded-md"
                                 >
                                   <MdEditDocument color="white" />
                                 </div>
-                                <div className="flex bg-red-600 px-3 py-3 rounded-md">
+                                <div
+                                  onClick={() => {
+                                    handleDelete(item);
+                                  }}
+                                  className="flex bg-red-600 px-3 py-3 rounded-md"
+                                >
                                   <MdDelete color="white" />
                                 </div>
                               </div>
                             </td>
-                          </tr>
+                          </motion.tr>
                         );
                       })
                     )
@@ -228,30 +410,17 @@ const Snack = () => {
                   )}
                 </tbody>
               </table>
-            </div>
-            <div className="w-full h-fit flex flex-col md:flex-row mt-8 justify-center items-center md:justify-between gap-2 mb-4">
-              <div>
-                Showing <span className="font-bold">6</span> From{" "}
-                <span className="font-bold">26</span> Data
-              </div>
-              <div className="flex flex-row gap-1">
-                <div className="flex px-3 py-1 bg-orange-400 text-white rounded-md border-[2px]">
-                  1
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  2
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  3
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  4
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  {">"}
-                </div>
-              </div>
-            </div>
+            </motion.div>
+            {/* Pagination */}
+            {isLoading || error ? undefined : (
+              <Pagination
+                page={page}
+                SetPage={SetPage}
+                total={!data ? 0 : data.products.snack.total_data}
+                showItem={!data ? 0 : data.products.snack.data.length}
+                limit={limit}
+              />
+            )}
           </div>
         </div>
       </div>
