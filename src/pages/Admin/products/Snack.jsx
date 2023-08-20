@@ -9,14 +9,19 @@ import useSWR, { mutate } from "swr";
 import fetcher from "../../../utils/Fetcher";
 import UrlServer from "../../../utils/urlServer";
 import convertRupiah from "../../../utils/convertRupiah";
+import Pagination from "../../../components/Pagination";
+import { motion } from "framer-motion";
 
 const Snack = () => {
   const [IsShow, SetIsShow] = useState(false);
   const [DialogShow, SetDialog] = useState(false);
   const [OptionDialog, SetOptionDialog] = useState("Add");
+  const [page, SetPage] = useState(1);
+  const [limit, SetLimit] = useState(2);
+  const [search, SetSearch] = useState("");
 
   const { data, isLoading, error } = useSWR(
-    `${UrlServer}/api/getProduct`,
+    `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`,
     fetcher
   );
 
@@ -103,14 +108,21 @@ const Snack = () => {
             </nav>
             <div className="flex flex-col md:flex-row w-full h-fit mt-2 justify-between gap-4">
               <input
+                onChange={(e) => {
+                  SetPage(1);
+                  SetSearch(e.target.value);
+                }}
                 className="py-2 px-6 border-[2px] rounded-lg outline-none w-full md:flex-1 md:max-w-[400px]"
                 placeholder="Search..."
                 type="text"
               />
               <div className="flex flex-row gap-2 cursor-default mt-4 md:mt-0">
-                <div onClick={() => {
-                  mutate(`${UrlServer}/api/getProduct`)
-                }} className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center">
+                <div
+                  onClick={() => {
+                    mutate(`${UrlServer}/api/getProduct`);
+                  }}
+                  className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center"
+                >
                   <p>Delete</p>
                 </div>
                 <div
@@ -124,7 +136,12 @@ const Snack = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full h-full flex flex-col bg-white flex-grow mt-8 rounded-lg px-6 py-4 border-[2px] overflow-x-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="w-full h-full flex flex-col bg-white flex-grow mt-8 rounded-lg px-6 py-4 border-[2px] overflow-x-auto"
+            >
               <table className="border-separate border-spacing-y-3">
                 <thead>
                   <tr>
@@ -168,9 +185,14 @@ const Snack = () => {
                         </tr>
                       </>
                     ) : (
-                      data.products.snack.map((item, index) => {
+                      data.products.snack.data.map((item, index) => {
                         return (
-                          <tr key={index}>
+                          <motion.tr
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{duration: 0.3, ease: 'easeInOut'}}
+                            key={item.id}
+                          >
                             <td className="px-4 w-16 text-center">
                               <div className="">
                                 <input
@@ -215,7 +237,7 @@ const Snack = () => {
                                 </div>
                               </div>
                             </td>
-                          </tr>
+                          </motion.tr>
                         );
                       })
                     )
@@ -228,30 +250,17 @@ const Snack = () => {
                   )}
                 </tbody>
               </table>
-            </div>
-            <div className="w-full h-fit flex flex-col md:flex-row mt-8 justify-center items-center md:justify-between gap-2 mb-4">
-              <div>
-                Showing <span className="font-bold">6</span> From{" "}
-                <span className="font-bold">26</span> Data
-              </div>
-              <div className="flex flex-row gap-1">
-                <div className="flex px-3 py-1 bg-orange-400 text-white rounded-md border-[2px]">
-                  1
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  2
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  3
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  4
-                </div>
-                <div className="flex px-3 py-1 bg-white hover:bg-gray-100 rounded-md border-[2px]">
-                  {">"}
-                </div>
-              </div>
-            </div>
+            </motion.div>
+            {/* Pagination */}
+            {isLoading || error ? undefined : (
+              <Pagination
+                page={page}
+                SetPage={SetPage}
+                total={!data ? 0 : data.products.snack.total_data}
+                showItem={!data ? 0 : data.products.snack.data.length}
+                limit={limit}
+              />
+            )}
           </div>
         </div>
       </div>
