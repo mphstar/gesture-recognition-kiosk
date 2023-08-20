@@ -11,22 +11,160 @@ import UrlServer from "../../../utils/urlServer";
 import convertRupiah from "../../../utils/convertRupiah";
 import Pagination from "../../../components/Pagination";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 
 const Snack = () => {
   const [IsShow, SetIsShow] = useState(false);
   const [DialogShow, SetDialog] = useState(false);
   const [OptionDialog, SetOptionDialog] = useState("Add");
   const [page, SetPage] = useState(1);
-  const [limit, SetLimit] = useState(2);
+  const [limit, SetLimit] = useState(6);
   const [search, SetSearch] = useState("");
 
-  const { data, isLoading, error } = useSWR(
-    `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`,
-    fetcher
-  );
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  const [dataSelected, SetDataSelected] = useState();
+
+  useEffect(() => {
+    setSelectedRows([]);
+    setSelectAll(false);
+  }, [page]);
+
+  const refreshPage = () => {
+    SetPage(1);
+    SetSearch("");
+  };
+
+  const handleCheckboxChange = (id) => {
+    if (selectedRows.includes(id)) {
+      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
+    } else {
+      setSelectedRows([...selectedRows, id]);
+    }
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(data.products.snack.data.map((item) => item.id));
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const url = `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`;
+
+  const { data, isLoading, error } = useSWR(url, fetcher);
+
+  const handleDelete = (item) => {
+    Swal.fire({
+      title: "Question?",
+      text: `Are you sure to Delete Data?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
+          allowOutsideClick: false,
+          showConfirmButton: false,
+        });
+
+        const result = await fetch(`${UrlServer}/api/product/delete`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: item.id, image_path: item.image }), // Ganti dengan data yang ingin Anda kirim
+        });
+
+        if (result.ok) {
+          Swal.fire("Success", `Delete Data Success`, "success").then(() => {
+            mutate(url);
+            SetDialog(false);
+          });
+        } else {
+          Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
+            mutate(url);
+            SetDialog(false);
+          });
+        }
+      }
+    });
+  };
+
+  const handleDeleteSelection = () => {
+    if (selectedRows.length == 0) {
+      Swal.fire("Information", `Select One Data or More First`, "warning");
+    } else {
+      Swal.fire({
+        title: "Question?",
+        text: `Are you sure to Delete Data?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Loading",
+            html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
+            allowOutsideClick: false,
+            showConfirmButton: false,
+          });
+
+          const result = await fetch(
+            `${UrlServer}/api/product/deleteSelection`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ id: selectedRows }), // Ganti dengan data yang ingin Anda kirim
+            }
+          );
+
+          if (result.ok) {
+            Swal.fire("Success", `Delete Data Success`, "success").then(() => {
+              mutate(url);
+              refreshPage()
+              setSelectAll(false)
+              setSelectedRows([])
+              SetDialog(false);
+            });
+          } else {
+            Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
+              mutate(url);
+              refreshPage()
+              setSelectAll(false)
+              setSelectedRows([])
+              SetDialog(false);
+            });
+          }
+        }
+      });
+    }
+  };
 
   return (
-    <AdminContext.Provider value={{ IsShow, SetIsShow, DialogShow, SetDialog }}>
+    <AdminContext.Provider
+      value={{
+        IsShow,
+        SetIsShow,
+        DialogShow,
+        SetDialog,
+        url,
+        refreshPage,
+        dataSelected,
+        SetDataSelected,
+      }}
+    >
       <DialogProducts option={OptionDialog} />
       <div className="">
         <div className="">
@@ -115,11 +253,12 @@ const Snack = () => {
                 className="py-2 px-6 border-[2px] rounded-lg outline-none w-full md:flex-1 md:max-w-[400px]"
                 placeholder="Search..."
                 type="text"
+                value={search}
               />
               <div className="flex flex-row gap-2 cursor-default mt-4 md:mt-0">
                 <div
                   onClick={() => {
-                    mutate(`${UrlServer}/api/getProduct`);
+                    handleDeleteSelection();
                   }}
                   className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center"
                 >
@@ -150,6 +289,8 @@ const Snack = () => {
                         <input
                           className="h-4 w-4"
                           type="checkbox"
+                          onChange={handleSelectAll}
+                          checked={selectAll}
                           name=""
                           id=""
                         />
@@ -190,7 +331,7 @@ const Snack = () => {
                           <motion.tr
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{duration: 0.3, ease: 'easeInOut'}}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
                             key={item.id}
                           >
                             <td className="px-4 w-16 text-center">
@@ -198,6 +339,8 @@ const Snack = () => {
                                 <input
                                   className="h-4 w-4"
                                   type="checkbox"
+                                  onChange={() => handleCheckboxChange(item.id)}
+                                  checked={selectedRows.includes(item.id)}
                                   name=""
                                   id=""
                                 />
@@ -208,7 +351,7 @@ const Snack = () => {
                                 <div className="w-16 h-fit">
                                   <img
                                     className="w-full h-full object-cover"
-                                    src={Snack1}
+                                    src={`${UrlServer}/uploads/${item.image}`}
                                     alt="snack"
                                   />
                                 </div>
@@ -226,13 +369,19 @@ const Snack = () => {
                                 <div
                                   onClick={() => {
                                     SetOptionDialog("Update");
+                                    SetDataSelected(item);
                                     SetDialog(true);
                                   }}
                                   className="flex bg-orange-400 px-3 py-3 rounded-md"
                                 >
                                   <MdEditDocument color="white" />
                                 </div>
-                                <div className="flex bg-red-600 px-3 py-3 rounded-md">
+                                <div
+                                  onClick={() => {
+                                    handleDelete(item);
+                                  }}
+                                  className="flex bg-red-600 px-3 py-3 rounded-md"
+                                >
                                   <MdDelete color="white" />
                                 </div>
                               </div>
