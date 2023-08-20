@@ -3,7 +3,6 @@ import HeaderAdmin from "../../../components/HeaderAdmin";
 import Sidebar from "../../../components/Sidebar";
 import AdminContext from "../../../utils/AdminContext";
 import { MdEditDocument, MdDelete } from "react-icons/md";
-import Snack1 from "../../../assets/images/doritos.png";
 import DialogProducts from "../../../components/DialogProducts";
 import useSWR, { mutate } from "swr";
 import fetcher from "../../../utils/Fetcher";
@@ -25,6 +24,7 @@ const Snack = () => {
   const [selectAll, setSelectAll] = useState(false);
 
   const [dataSelected, SetDataSelected] = useState();
+  const [category, SetCategory] = useState(1)
 
   useEffect(() => {
     setSelectedRows([]);
@@ -133,17 +133,17 @@ const Snack = () => {
           if (result.ok) {
             Swal.fire("Success", `Delete Data Success`, "success").then(() => {
               mutate(url);
-              refreshPage()
-              setSelectAll(false)
-              setSelectedRows([])
+              refreshPage();
+              setSelectAll(false);
+              setSelectedRows([]);
               SetDialog(false);
             });
           } else {
             Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
               mutate(url);
-              refreshPage()
-              setSelectAll(false)
-              setSelectedRows([])
+              refreshPage();
+              setSelectAll(false);
+              setSelectedRows([]);
               SetDialog(false);
             });
           }
@@ -163,6 +163,7 @@ const Snack = () => {
         refreshPage,
         dataSelected,
         SetDataSelected,
+        category
       }}
     >
       <DialogProducts option={OptionDialog} />
@@ -325,6 +326,16 @@ const Snack = () => {
                           ></td>
                         </tr>
                       </>
+                    ) : data.products.snack.data.length == 0 ? (
+                      <tr>
+                        <td
+                          className="py-4 text-center"
+                          colSpan={5}
+                          rowSpan={5}
+                        >
+                          Data Not Found
+                        </td>
+                      </tr>
                     ) : (
                       data.products.snack.data.map((item, index) => {
                         return (
@@ -346,11 +357,11 @@ const Snack = () => {
                                 />
                               </div>
                             </td>
-                            <td className="text-left px-4">
+                            <td className="text-left px-4 py-2">
                               <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
-                                <div className="w-16 h-fit">
+                                <div className="w-16 h-16">
                                   <img
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain"
                                     src={`${UrlServer}/uploads/${item.image}`}
                                     alt="snack"
                                   />
@@ -364,7 +375,7 @@ const Snack = () => {
                             <td className="text-left px-4">
                               {item.description}
                             </td>
-                            <td>
+                            <td className="px-4">
                               <div className="flex flex-row gap-2">
                                 <div
                                   onClick={() => {

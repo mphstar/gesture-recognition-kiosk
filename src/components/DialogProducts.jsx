@@ -14,6 +14,7 @@ const DialogProducts = ({ option }) => {
     refreshPage,
     dataSelected,
     SetDataSelected,
+    category
   } = useContext(AdminContext);
 
   const [Name, SetName] = useState("");
@@ -60,7 +61,7 @@ const DialogProducts = ({ option }) => {
 
     const formData = new FormData();
 
-    formData.append("category", 1)
+    formData.append("category", category)
     formData.append("name", Name);
     formData.append("description", Description);
     formData.append("price", Price);
