@@ -164,7 +164,7 @@ function App() {
       <div onClick={() => {
         SetDialog(true)
         setIsPlaying(true)
-      }} className="fixed flex justify-center items-center  w-16 h-16 p-4 drop-shadow-md rounded-full bg-blue-500 right-[38px] lg:left-10 lg:bottom-10 text-white z-[250] bottom-28">
+      }} className="fixed flex justify-center items-center  w-16 h-16 p-4 drop-shadow-md rounded-full bg-blue-500 right-[38px] lg:left-10 lg:bottom-10 text-white z-[198] bottom-28">
         <p className="font-extrabold text-4xl">?</p>
       </div>
 
