@@ -4,6 +4,7 @@ import { MdFileOpen } from "react-icons/md";
 import Swal from "sweetalert2";
 import { mutate } from "swr";
 import AdminContext from "../utils/AdminContext";
+import convertRupiah from "../utils/convertRupiah";
 import UrlServer from "../utils/urlServer";
 
 const DialogProducts = ({ option }) => {
@@ -29,7 +30,7 @@ const DialogProducts = ({ option }) => {
     if (dataSelected) {
       SetName(dataSelected.name);
       SetDescription(dataSelected.description);
-      SetPrice(dataSelected.price);
+      SetPrice(convertRupiah.formatCurrency(dataSelected.price.toString()));
       SetId(dataSelected.id);
 
       SetOldImage(dataSelected.image);
@@ -64,7 +65,7 @@ const DialogProducts = ({ option }) => {
     formData.append("category", category);
     formData.append("name", Name);
     formData.append("description", Description);
-    formData.append("price", Price);
+    formData.append("price", Price.replace(',', ''));
     formData.append("id", Id);
     formData.append("image", Image);
 
@@ -176,6 +177,7 @@ const DialogProducts = ({ option }) => {
                 className="outline-none px-4 py-2 border-[2px] rounded-md"
                 type="text"
                 name="name"
+                maxLength={30}
                 id="name"
                 value={Name}
               />
@@ -200,9 +202,10 @@ const DialogProducts = ({ option }) => {
                 type="text"
                 name="price"
                 id="price"
+                maxLength={11}
                 value={Price}
                 onChange={(e) => {
-                  SetPrice(e.target.value);
+                  SetPrice(convertRupiah.formatCurrency(e.target.value));
                 }}
               />
             </div>
