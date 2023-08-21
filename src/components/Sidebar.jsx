@@ -3,6 +3,7 @@ import Polije from "../assets/images/polije.png";
 import KNU from "../assets/images/knu.png";
 import { Link } from "react-router-dom";
 import AdminContext from "../utils/AdminContext";
+import Swal from "sweetalert2";
 
 const Sidebar = ({ active }) => {
   const { IsShow, SetIsShow } = useContext(AdminContext);
@@ -166,7 +167,9 @@ const Sidebar = ({ active }) => {
           >
             <div className="flex flex-row items-center w-full">
               <svg
-                className={`w-6 h-6 ${active == "History" ? 'fill-white' : 'fill-black'} transition ease-in-out`}
+                className={`w-6 h-6 ${
+                  active == "History" ? "fill-white" : "fill-black"
+                } transition ease-in-out`}
                 width="34"
                 height="34"
                 viewBox="0 0 34 34"
@@ -188,6 +191,47 @@ const Sidebar = ({ active }) => {
               </p>
             </div>
           </Link>
+          <div onClick={() => {
+            Swal.fire({
+              title: "Question?",
+              text: `Are you sure to Logout?`,
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Ya",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                localStorage.removeItem('isLogin')
+                window.location.href = '/login'
+              }
+            });
+          }}
+            className={`flex flex-row justify-between h-fit py-3 cursor-pointer menu flex-none px-4 ${
+              active == "Logout"
+                ? "bg-orange-400 text-white"
+                : "hover:bg-gray-200"
+            } rounded-md`}
+          >
+            <div className="flex flex-row items-center w-full">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 21C4.45 21 3.979 20.804 3.587 20.412C3.195 20.02 2.99934 19.5493 3 19V5C3 4.45 3.196 3.979 3.588 3.587C3.98 3.195 4.45067 2.99934 5 3H12V5H5V19H12V21H5ZM16 17L14.625 15.55L17.175 13H9V11H17.175L14.625 8.45L16 7L21 12L16 17Z"
+                  fill="black"
+                />
+              </svg>
+
+              <p className="ml-5 poppins-medium text-[15px] md:text-[16px] lg:text-[15px] transition ease-in-out">
+                Logout
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       <div
