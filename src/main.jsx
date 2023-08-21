@@ -8,6 +8,7 @@ import Dashboard from "./pages/Admin/Dashboard.jsx";
 import Snack from "./pages/Admin/products/Snack.jsx";
 import Drink from "./pages/Admin/products/Drink.jsx";
 import Ice from "./pages/Admin/products/Ice.jsx";
+import History from "./pages/Admin/History.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,23 +17,28 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/dashboard",
-    element: <Dashboard />
+    element: <Dashboard />,
   },
   {
     path: "/products/snack",
-    element: <Snack />
-  },{
+    element: <Snack />,
+  },
+  {
     path: "/products/drink",
-    element: <Drink />
-  },{
+    element: <Drink />,
+  },
+  {
     path: "/products/icecream",
-    element: <Ice />
-  }
-
+    element: <Ice />,
+  },
+  {
+    path: "/history",
+    element: <History />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

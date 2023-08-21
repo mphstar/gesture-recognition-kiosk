@@ -14,7 +14,7 @@ const DialogProducts = ({ option }) => {
     refreshPage,
     dataSelected,
     SetDataSelected,
-    category
+    category,
   } = useContext(AdminContext);
 
   const [Name, SetName] = useState("");
@@ -23,7 +23,7 @@ const DialogProducts = ({ option }) => {
   const [Image, SetImage] = useState();
   const [PreviewImage, SetPreview] = useState();
   const [Id, SetId] = useState();
-  const [oldImage, SetOldImage] = useState()
+  const [oldImage, SetOldImage] = useState();
 
   useEffect(() => {
     if (dataSelected) {
@@ -32,7 +32,7 @@ const DialogProducts = ({ option }) => {
       SetPrice(dataSelected.price);
       SetId(dataSelected.id);
 
-      SetOldImage(dataSelected.image)
+      SetOldImage(dataSelected.image);
 
       SetPreview(`${UrlServer}/uploads/${dataSelected.image}`);
     }
@@ -50,8 +50,8 @@ const DialogProducts = ({ option }) => {
     SetImage(undefined);
     SetPreview(undefined);
 
-    SetId(undefined)
-    SetOldImage(undefined)
+    SetId(undefined);
+    SetOldImage(undefined);
 
     SetDataSelected(undefined);
   };
@@ -61,15 +61,15 @@ const DialogProducts = ({ option }) => {
 
     const formData = new FormData();
 
-    formData.append("category", category)
+    formData.append("category", category);
     formData.append("name", Name);
     formData.append("description", Description);
     formData.append("price", Price);
     formData.append("id", Id);
     formData.append("image", Image);
 
-    if(option == "Update"){
-      formData.append("filename_old", oldImage)
+    if (option == "Update") {
+      formData.append("filename_old", oldImage);
     }
 
     var error = "";
@@ -116,7 +116,9 @@ const DialogProducts = ({ option }) => {
               method: "POST",
               body: formData,
             }
-          );
+          ).catch((e) => {
+            Swal.fire("Failed", `Failed Access Server`, "error");
+          });
 
           if (result.ok) {
             Swal.fire("Success", `${option} Data Success`, "success").then(

@@ -45,12 +45,14 @@ const Drink = () => {
   };
 
   const handleSelectAll = () => {
-    if (selectAll) {
-      setSelectedRows([]);
-    } else {
-      setSelectedRows(data.products.snack.data.map((item) => item.id));
+    if(data){
+      if (selectAll) {
+        setSelectedRows([]);
+      } else {
+        setSelectedRows(data.products.drink.data.map((item) => item.id));
+      }
+      setSelectAll(!selectAll);
     }
-    setSelectAll(!selectAll);
   };
 
   const url = `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`;

@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import HeaderAdmin from "../../../components/HeaderAdmin";
-import Sidebar from "../../../components/Sidebar";
-import AdminContext from "../../../utils/AdminContext";
+import HeaderAdmin from "../../components/HeaderAdmin";
+import Sidebar from "../../components/Sidebar";
+import AdminContext from "../../utils/AdminContext";
 import { MdEditDocument, MdDelete } from "react-icons/md";
-import DialogProducts from "../../../components/DialogProducts";
+import DialogProducts from "../../components/DialogProducts";
 import useSWR, { mutate } from "swr";
-import fetcher from "../../../utils/Fetcher";
-import UrlServer from "../../../utils/urlServer";
-import convertRupiah from "../../../utils/convertRupiah";
-import Pagination from "../../../components/Pagination";
+import fetcher from "../../utils/Fetcher";
+import UrlServer from "../../utils/urlServer";
+import convertRupiah from "../../utils/convertRupiah";
+import Pagination from "../../components/Pagination";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 
-const Snack = () => {
+const History = () => {
   const [IsShow, SetIsShow] = useState(false);
   const [DialogShow, SetDialog] = useState(false);
   const [OptionDialog, SetOptionDialog] = useState("Add");
@@ -24,7 +24,7 @@ const Snack = () => {
   const [selectAll, setSelectAll] = useState(false);
 
   const [dataSelected, SetDataSelected] = useState();
-  const [category, SetCategory] = useState(1)
+  const [category, SetCategory] = useState(2);
 
   useEffect(() => {
     setSelectedRows([]);
@@ -36,123 +36,9 @@ const Snack = () => {
     SetSearch("");
   };
 
-  const handleCheckboxChange = (id) => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
-    } else {
-      setSelectedRows([...selectedRows, id]);
-    }
-  };
-
-  const handleSelectAll = () => {
-    if(data){
-      if (selectAll) {
-        setSelectedRows([]);
-      } else {
-        setSelectedRows(data.products.snack.data.map((item) => item.id));
-      }
-      setSelectAll(!selectAll);
-    }
-  };
-
   const url = `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`;
 
   const { data, isLoading, error } = useSWR(url, fetcher);
-
-  const handleDelete = (item) => {
-    Swal.fire({
-      title: "Question?",
-      text: `Are you sure to Delete Data?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Loading",
-          html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
-          allowOutsideClick: false,
-          showConfirmButton: false,
-        });
-
-        const result = await fetch(`${UrlServer}/api/product/delete`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: item.id, image_path: item.image }), // Ganti dengan data yang ingin Anda kirim
-        });
-
-        if (result.ok) {
-          Swal.fire("Success", `Delete Data Success`, "success").then(() => {
-            mutate(url);
-            SetDialog(false);
-          });
-        } else {
-          Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
-            mutate(url);
-            SetDialog(false);
-          });
-        }
-      }
-    });
-  };
-
-  const handleDeleteSelection = () => {
-    if (selectedRows.length == 0) {
-      Swal.fire("Information", `Select One Data or More First`, "warning");
-    } else {
-      Swal.fire({
-        title: "Question?",
-        text: `Are you sure to Delete Data?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Loading",
-            html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
-            allowOutsideClick: false,
-            showConfirmButton: false,
-          });
-
-          const result = await fetch(
-            `${UrlServer}/api/product/deleteSelection`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ id: selectedRows }), // Ganti dengan data yang ingin Anda kirim
-            }
-          );
-
-          if (result.ok) {
-            Swal.fire("Success", `Delete Data Success`, "success").then(() => {
-              mutate(url);
-              refreshPage();
-              setSelectAll(false);
-              setSelectedRows([]);
-              SetDialog(false);
-            });
-          } else {
-            Swal.fire("Failed", `Delete Data Failed`, "error").then(() => {
-              mutate(url);
-              refreshPage();
-              setSelectAll(false);
-              setSelectedRows([]);
-              SetDialog(false);
-            });
-          }
-        }
-      });
-    }
-  };
 
   return (
     <AdminContext.Provider
@@ -165,16 +51,16 @@ const Snack = () => {
         refreshPage,
         dataSelected,
         SetDataSelected,
-        category
+        category,
       }}
     >
       <DialogProducts option={OptionDialog} />
       <div className="">
         <div className="">
-          <Sidebar active="Snack" />
+          <Sidebar active="History" />
         </div>
         <div className="flex flex-col w-full md:pl-[320px] lg:pl-[290px] min-h-screen duration-300 ease-in-out">
-          <HeaderAdmin title="Products" />
+          <HeaderAdmin title="History" />
           <div className="h-fit flex-grow flex flex-col py-4 px-6 md:px-12 bg-gray-100">
             <nav
               className="flex mt-0 overflow-x-auto py-4"
@@ -198,31 +84,6 @@ const Snack = () => {
                     Home
                   </a>
                 </li>
-                <li>
-                  <div className="flex items-center">
-                    <svg
-                      className="w-3 h-3 text-gray-400 mx-1"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 6 10"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 9 4-4-4-4"
-                      />
-                    </svg>
-                    <a
-                      href="#"
-                      className="ml-1 text-sm font-medium text-gray-700 hover:text-orange-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
-                    >
-                      Products
-                    </a>
-                  </div>
-                </li>
                 <li aria-current="page">
                   <div className="flex items-center">
                     <svg
@@ -241,7 +102,7 @@ const Snack = () => {
                       />
                     </svg>
                     <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
-                      Snack
+                      History
                     </span>
                   </div>
                 </li>
@@ -287,21 +148,10 @@ const Snack = () => {
               <table className="border-separate border-spacing-y-3">
                 <thead>
                   <tr>
-                    <th className="px-4 py-4 text-center">
-                      <div className="">
-                        <input
-                          className="h-4 w-4"
-                          type="checkbox"
-                          onChange={handleSelectAll}
-                          checked={selectAll}
-                          name=""
-                          id=""
-                        />
-                      </div>
-                    </th>
-                    <th className="px-4 py-4 text-left">Name</th>
+                    <th className="px-4 py-4 text-left w-[300px]">ID Transaksi</th>
+                    <th className="px-4 py-4 text-left">Total Items</th>
                     <th className="px-4 py-4 text-left">Price</th>
-                    <th className="px-4 py-4 text-left">Description</th>
+                    <th className="px-4 py-4 text-left">Date</th>
                     <th className="px-4 py-4 text-left">Action</th>
                   </tr>
                 </thead>
@@ -328,7 +178,7 @@ const Snack = () => {
                           ></td>
                         </tr>
                       </>
-                    ) : data.products.snack.data.length == 0 ? (
+                    ) : data.products.drink.data.length == 0 ? (
                       <tr>
                         <td
                           className="py-4 text-center"
@@ -339,7 +189,7 @@ const Snack = () => {
                         </td>
                       </tr>
                     ) : (
-                      data.products.snack.data.map((item, index) => {
+                      data.products.drink.data.map((item, index) => {
                         return (
                           <motion.tr
                             initial={{ opacity: 0, y: 10 }}
@@ -347,32 +197,14 @@ const Snack = () => {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             key={item.id}
                           >
-                            <td className="px-4 w-16 text-center">
-                              <div className="">
-                                <input
-                                  className="h-4 w-4"
-                                  type="checkbox"
-                                  onChange={() => handleCheckboxChange(item.id)}
-                                  checked={selectedRows.includes(item.id)}
-                                  name=""
-                                  id=""
-                                />
-                              </div>
-                            </td>
-                            <td className="text-left px-4 py-2">
-                              <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-4">
-                                <div className="w-16 h-16">
-                                  <img
-                                    className="w-full h-full object-contain"
-                                    src={`${UrlServer}/uploads/${item.image}`}
-                                    alt="snack"
-                                  />
-                                </div>
-                                <div>{item.name}</div>
-                              </div>
+                            <td className="text-left px-4">
+                              {convertRupiah.formatPrice(item.price)}
                             </td>
                             <td className="text-left px-4">
                               {convertRupiah.formatPrice(item.price)}
+                            </td>
+                            <td className="text-left px-4">
+                              {item.description}
                             </td>
                             <td className="text-left px-4">
                               {item.description}
@@ -389,14 +221,7 @@ const Snack = () => {
                                 >
                                   <MdEditDocument color="white" />
                                 </div>
-                                <div
-                                  onClick={() => {
-                                    handleDelete(item);
-                                  }}
-                                  className="flex bg-red-600 px-3 py-3 rounded-md"
-                                >
-                                  <MdDelete color="white" />
-                                </div>
+                                
                               </div>
                             </td>
                           </motion.tr>
@@ -418,8 +243,8 @@ const Snack = () => {
               <Pagination
                 page={page}
                 SetPage={SetPage}
-                total={!data ? 0 : data.products.snack.total_data}
-                showItem={!data ? 0 : data.products.snack.data.length}
+                total={!data ? 0 : data.products.drink.total_data}
+                showItem={!data ? 0 : data.products.drink.data.length}
                 limit={limit}
               />
             )}
@@ -430,4 +255,4 @@ const Snack = () => {
   );
 };
 
-export default Snack;
+export default History;

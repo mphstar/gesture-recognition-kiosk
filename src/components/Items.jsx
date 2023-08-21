@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { motion } from "framer-motion";
 import convertRupiah from "../utils/convertRupiah";
+import UrlServer from "../utils/urlServer";
 
 const Items = ({ image, name, desc, price, onclick }) => {
   return (
@@ -20,12 +21,12 @@ const Items = ({ image, name, desc, price, onclick }) => {
     >
       <img
         className={`absolute top-0 h-32 w-36 object-contain translate-x-[50%] right-[50%] group-hover:-translate-y-5 duration-500`}
-        src={image}
+        src={`${UrlServer}/uploads/${image}`}
         alt="burger"
       />
       <div className={`bg-white group-hover:border-orange-500 border-[2px] w-full h-fit px-4 pt-12 group-hover:pt-8 duration-500 rounded-lg`}>
         <h1 className="font-bold line-clamp-1">{name}</h1>
-        <p className="text-xs line-clamp-3">{desc}</p>
+        <p className="text-xs line-clamp-3 h-[50px] break-words">{desc}</p>
         <div className="w-full h-fit flex items-center justify-between py-4">
           <p className="font-bold text-orange-500">{convertRupiah.formatPrice(price)}</p>
           <div className="h-6 w-6 bg-orange-500 rounded-full flex items-center justify-center">
