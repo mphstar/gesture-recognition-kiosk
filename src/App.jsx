@@ -150,7 +150,7 @@ function App() {
       <div
         className={`bg-gray-500 min-h-screen flex items-center justify-center px-4 py-4`}
       >
-        <div className="flex flex-col lg:flex-row bg-gray-100 rounded-lg h-full lg:h-[800px] max-w-[1280px] w-full overflow-x-hidden">
+        <div className="flex flex-col lg:flex-row bg-gray-100 rounded-lg h-full lg:h-[840px] max-w-[1280px] w-full overflow-x-hidden">
           <div className="flex flex-col px-0 w-full lg:w-[70%] h-full py-4">
             <div className="h-fit flex mb-4 px-4">
               <Header />
@@ -193,7 +193,7 @@ function App() {
                 <AnimatePresence>
                   <div
                     ref={kontenItem}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full w-full mt-2 gap-3"
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 overflow-y-auto pt-6 scroll-cart pr-2 h-full w-full mt-2 gap-3"
                   >
                     {(tabSelected == "Snack"
                       ? data.products.snack.data

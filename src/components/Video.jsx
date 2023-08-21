@@ -91,7 +91,7 @@ const Video = () => {
       if (IsFocus.focused == kontenTab) {
         if (
           (nilai.hand == "Left" || nilai.hand == "Right") &&
-          nilai.gesture == "Close"
+          nilai.gesture == "Open"
         ) {
           // Here unfocus from tab menu
           SetFocus({
@@ -126,11 +126,16 @@ const Video = () => {
       } else if (IsFocus.focused == kontenItem) {
         if (
           (nilai.hand == "Left" || nilai.hand == "Right") &&
-          nilai.gesture == "Close"
+          nilai.gesture == "Open"
         ) {
           // Here unfocus
 
           window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+
+          kontenItem.current.scrollTo({
             top: 0,
             behavior: "smooth",
           });
@@ -174,6 +179,14 @@ const Video = () => {
                     IsFocus.focused.current.children[index + 1].offsetHeight,
                   behavior: "smooth",
                 });
+
+                kontenItem.current.scrollTo({
+                  top:
+                    (IsFocus.focused.current.children[index + 1].offsetTop -
+                      IsFocus.focused.current.children[index + 1].offsetHeight) - 100,
+                  behavior: "smooth",
+                });
+
                 IsFocus.focused.current.children[
                   index + 1
                 ].children[0].classList.add("-translate-y-5");
@@ -222,6 +235,17 @@ const Video = () => {
                           .offsetHeight,
                   behavior: "smooth",
                 });
+
+                kontenItem.current.scrollTo({
+                  top:
+                    index == 1
+                      ? 0
+                      : (IsFocus.focused.current.children[index - 1].offsetTop -
+                        IsFocus.focused.current.children[index - 1]
+                          .offsetHeight) - 100,
+                  behavior: "smooth",
+                });
+
                 IsFocus.focused.current.children[
                   index - 1
                 ].children[0].classList.add("-translate-y-5");
@@ -252,7 +276,7 @@ const Video = () => {
       } else if (IsFocus.focused == kontenCart) {
         if (
           (nilai.hand == "Left" || nilai.hand == "Right") &&
-          nilai.gesture == "Close"
+          nilai.gesture == "Open"
         ) {
           ShowCart(false);
 
@@ -378,8 +402,7 @@ const Video = () => {
                 .lastChild
             ) {
               if (IsFocus.itemFocused.children[1].children[1].innerHTML == 1) {
-                kontenCart.current.firstChild.children[0].children[2]
-                      .children[0].classList.add(
+                kontenCart.current.firstChild.children[0].children[2].children[0].classList.add(
                   "border-orange-600"
                 );
 
@@ -391,10 +414,8 @@ const Video = () => {
                 });
               }
             }
-            
-            
-            IsFocus.itemFocused.children[1].children[0].click()
 
+            IsFocus.itemFocused.children[1].children[0].click();
           }
         } else if (nilai.hand == "Right" && nilai.gesture == "Okay") {
           if (IsFocus.itemFocused) {

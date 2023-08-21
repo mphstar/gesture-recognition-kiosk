@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 import UrlServer from "../utils/urlServer";
 
 const Cart = () => {
-  const { DataCart, SetDataCart, ShowCart, IsFocus, SetFocus } = useContext(ItemContext);
+  const { DataCart, SetDataCart, ShowCart, IsFocus, SetFocus } =
+    useContext(ItemContext);
   const CartContent = useRef(null);
 
   const handleQuantity = (option, key) => {
@@ -46,6 +47,8 @@ const Cart = () => {
         confirmButtonText: "Yes",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          await sendData();
+
           toast.success("Payment Success", {
             position: "top-center",
             autoClose: 1000,
@@ -70,24 +73,52 @@ const Cart = () => {
             description: "",
             focused: null,
           });
-          await sendData()
-
         }
       });
     }
   };
 
   const sendData = async () => {
-    const response = await fetch(`${UrlServer}/transaction`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ transaction: DataCart }), // Ganti dengan data yang ingin Anda kirim
-    });
+    Swal.fire({
+      title: "Question",
+      text: "Are you want to printing receipt transaction?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: '<div class="body-loading"><div class="loadingspinner"></div></div>', // add html attribute if you want or remove
+          allowOutsideClick: false,
+          showConfirmButton: false,
+        });
 
-    const responseData = await response.json();
-    console.log(responseData);
+        const response = await fetch(`${UrlServer}/transaction`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ transaction: DataCart, isPrinting: true }), // Ganti dengan data yang ingin Anda kirim
+        }).then((res) => {
+          Swal.close();
+        });
+
+      } else if(result.isDismissed) {
+        const response = await fetch(`${UrlServer}/transaction`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ transaction: DataCart }), // Ganti dengan data yang ingin Anda kirim
+        }).then((res) => {
+          console.log(res);
+          Swal.close();
+        });
+      }
+    });
   };
 
   const handleCancel = () => {

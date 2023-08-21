@@ -156,8 +156,8 @@ const Sidebar = ({ active }) => {
               </div>
             </div>
           </div>
-          <a
-            href="/riwayat"
+          <Link
+            to="/history"
             className={`flex flex-row justify-between h-fit py-3 cursor-pointer menu flex-none px-4 ${
               active == "History"
                 ? "bg-orange-400 text-white"
@@ -166,7 +166,7 @@ const Sidebar = ({ active }) => {
           >
             <div className="flex flex-row items-center w-full">
               <svg
-                className="w-6 h-6 fill-black transition ease-in-out"
+                className={`w-6 h-6 ${active == "History" ? 'fill-white' : 'fill-black'} transition ease-in-out`}
                 width="34"
                 height="34"
                 viewBox="0 0 34 34"
@@ -187,7 +187,7 @@ const Sidebar = ({ active }) => {
                 History Transaction
               </p>
             </div>
-          </a>
+          </Link>
         </div>
       </div>
       <div

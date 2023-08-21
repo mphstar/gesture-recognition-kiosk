@@ -6,7 +6,7 @@ const Header = () => {
     <div className="flex flex-col text-white w-full h-fit bg-gray-500 rounded-2xl overflow-hidden relative">
       
       <div className="px-8 py-10 h-full flex flex-col justify-center z-[2]">
-        <p className="font-bold text-[1.5rem] w-full">Politeknik Negeri Jember Cafeteria</p>
+        <p className="font-bold text-[1.5rem] w-full">Politeknik Negeri Jember</p>
         <p className="">Team D Bintang, Iqbal, Pio, Yewon, Juyeol, Suin</p>
       </div>
       <div className="bg-black w-full h-full flex absolute z-[1] opacity-50"></div>
