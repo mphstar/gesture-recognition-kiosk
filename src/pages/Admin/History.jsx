@@ -11,32 +11,23 @@ import convertRupiah from "../../utils/convertRupiah";
 import Pagination from "../../components/Pagination";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
+import DialogHistory from "../../components/DialogHistory";
 
 const History = () => {
   const [IsShow, SetIsShow] = useState(false);
   const [DialogShow, SetDialog] = useState(false);
-  const [OptionDialog, SetOptionDialog] = useState("Add");
   const [page, SetPage] = useState(1);
   const [limit, SetLimit] = useState(6);
   const [search, SetSearch] = useState("");
 
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
-
   const [dataSelected, SetDataSelected] = useState();
-  const [category, SetCategory] = useState(2);
-
-  useEffect(() => {
-    setSelectedRows([]);
-    setSelectAll(false);
-  }, [page]);
 
   const refreshPage = () => {
     SetPage(1);
     SetSearch("");
   };
 
-  const url = `${UrlServer}/api/getProduct?page=${page}&limit=${limit}&search=${search}`;
+  const url = `${UrlServer}/api/getHistory?page=${page}&limit=${limit}&search=${search}`;
 
   const { data, isLoading, error } = useSWR(url, fetcher);
 
@@ -51,10 +42,9 @@ const History = () => {
         refreshPage,
         dataSelected,
         SetDataSelected,
-        category,
       }}
     >
-      <DialogProducts option={OptionDialog} />
+      <DialogHistory />
       <div className="">
         <div className="">
           <Sidebar active="History" />
@@ -119,25 +109,6 @@ const History = () => {
                 type="text"
                 value={search}
               />
-              <div className="flex flex-row gap-2 cursor-default mt-4 md:mt-0">
-                <div
-                  onClick={() => {
-                    handleDeleteSelection();
-                  }}
-                  className="bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-md items-center justify-center"
-                >
-                  <p>Delete</p>
-                </div>
-                <div
-                  onClick={() => {
-                    SetOptionDialog("Add");
-                    SetDialog(true);
-                  }}
-                  className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white rounded-md items-center justify-center"
-                >
-                  <p>Add Product</p>
-                </div>
-              </div>
             </div>
             <motion.div
               initial={{ opacity: 0 }}
@@ -148,7 +119,9 @@ const History = () => {
               <table className="border-separate border-spacing-y-3">
                 <thead>
                   <tr>
-                    <th className="px-4 py-4 text-left w-[300px]">ID Transaksi</th>
+                    <th className="px-4 py-4 text-left w-[300px]">
+                      ID Transaksi
+                    </th>
                     <th className="px-4 py-4 text-left">Total Items</th>
                     <th className="px-4 py-4 text-left">Price</th>
                     <th className="px-4 py-4 text-left">Date</th>
@@ -178,7 +151,7 @@ const History = () => {
                           ></td>
                         </tr>
                       </>
-                    ) : data.products.drink.data.length == 0 ? (
+                    ) : data.length == 0 ? (
                       <tr>
                         <td
                           className="py-4 text-center"
@@ -189,31 +162,32 @@ const History = () => {
                         </td>
                       </tr>
                     ) : (
-                      data.products.drink.data.map((item, index) => {
+                      data.data.map((item, index) => {
                         return (
                           <motion.tr
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, ease: "easeInOut" }}
-                            key={item.id}
+                            key={item.transaction_id}
                           >
-                            <td className="text-left px-4">
+                            <td className="text-left px-4 py-3">
+                              {item.transaction_id}
+                            </td>
+                            <td className="text-left px-4 py-3">
+                              {item.total_items}
+                            </td>
+                            <td className="text-left px-4 py-3">
                               {convertRupiah.formatPrice(item.price)}
                             </td>
-                            <td className="text-left px-4">
-                              {convertRupiah.formatPrice(item.price)}
+                            <td className="text-left px-4 py-3">
+                              {new Date(item.datetime)
+                                .toLocaleString()
+                                .replace(",", "")}
                             </td>
-                            <td className="text-left px-4">
-                              {item.description}
-                            </td>
-                            <td className="text-left px-4">
-                              {item.description}
-                            </td>
-                            <td className="px-4">
+                            <td className="px-4 py-3">
                               <div className="flex flex-row gap-2">
                                 <div
                                   onClick={() => {
-                                    SetOptionDialog("Update");
                                     SetDataSelected(item);
                                     SetDialog(true);
                                   }}
@@ -221,7 +195,6 @@ const History = () => {
                                 >
                                   <MdEditDocument color="white" />
                                 </div>
-                                
                               </div>
                             </td>
                           </motion.tr>
@@ -243,8 +216,8 @@ const History = () => {
               <Pagination
                 page={page}
                 SetPage={SetPage}
-                total={!data ? 0 : data.products.drink.total_data}
-                showItem={!data ? 0 : data.products.drink.data.length}
+                total={!data ? 0 : data.total}
+                showItem={!data ? 0 : data.data.length}
                 limit={limit}
               />
             )}
