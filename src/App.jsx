@@ -22,9 +22,14 @@ import UrlServer from "./utils/urlServer";
 
 import useSWR, { mutate } from "swr";
 import fetcher from "./utils/Fetcher";
+import ModalVideo from "./components/ModalVideo";
 
 function App() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const playerRef = useRef(null);
+
   const url = `${UrlServer}/api/getProduct`;
+
   const { data, isLoading, error } = useSWR(url, fetcher);
 
   const [isShowCart, ShowCart] = useState(false);
@@ -45,6 +50,8 @@ function App() {
     description: "",
     focused: null,
   });
+
+  const [DialogShow, SetDialog] = useState(false);
 
   const handleTab = (category) => {
     SetTabSelected(category);
@@ -138,6 +145,11 @@ function App() {
         kontenItem,
         kontenCart,
         ShowCart,
+        DialogShow,
+        SetDialog,
+        isPlaying,
+        setIsPlaying,
+        playerRef
       }}
     >
       {IsConnected ? (
@@ -147,6 +159,15 @@ function App() {
       ) : undefined}
 
       <ToastContainer />
+      <ModalVideo />
+      {/* video guide */}
+      <div onClick={() => {
+        SetDialog(true)
+        setIsPlaying(true)
+      }} className="fixed flex justify-center items-center  w-16 h-16 p-4 drop-shadow-md rounded-full bg-blue-500 right-[38px] lg:left-10 lg:bottom-10 text-white z-[250] bottom-28">
+        <p className="font-extrabold text-4xl">?</p>
+      </div>
+
       <div
         className={`bg-gray-500 min-h-screen flex items-center justify-center px-4 py-4`}
       >

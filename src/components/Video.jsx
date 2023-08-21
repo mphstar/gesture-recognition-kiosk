@@ -13,8 +13,17 @@ const Video = () => {
   const camm = useRef(null);
   const mycanv = useRef(null);
 
-  const { IsFocus, SetFocus, kontenTab, kontenItem, kontenCart, ShowCart } =
-    useContext(ItemContext);
+  const {
+    IsFocus,
+    SetFocus,
+    kontenTab,
+    kontenItem,
+    kontenCart,
+    ShowCart,
+    isPlaying,
+    setIsPlaying,
+    playerRef
+  } = useContext(ItemContext);
 
   const [nilai, setNilai] = useState({
     hand: null,
@@ -86,6 +95,12 @@ const Video = () => {
           kontenCart.current.classList.remove("border-transparent");
           kontenCart.current.classList.add("border-orange-600");
         }
+      } else if (
+        (nilai.hand == "Right" || nilai.hand == "Left") &&
+        nilai.gesture == "Close"
+      ) {
+        setIsPlaying(true);
+        SetFocus({ ...IsFocus, description: "Focused video", focused: "video" });
       }
     } else {
       if (IsFocus.focused == kontenTab) {
@@ -182,8 +197,9 @@ const Video = () => {
 
                 kontenItem.current.scrollTo({
                   top:
-                    (IsFocus.focused.current.children[index + 1].offsetTop -
-                      IsFocus.focused.current.children[index + 1].offsetHeight) - 100,
+                    IsFocus.focused.current.children[index + 1].offsetTop -
+                    IsFocus.focused.current.children[index + 1].offsetHeight -
+                    100,
                   behavior: "smooth",
                 });
 
@@ -240,9 +256,10 @@ const Video = () => {
                   top:
                     index == 1
                       ? 0
-                      : (IsFocus.focused.current.children[index - 1].offsetTop -
+                      : IsFocus.focused.current.children[index - 1].offsetTop -
                         IsFocus.focused.current.children[index - 1]
-                          .offsetHeight) - 100,
+                          .offsetHeight -
+                        100,
                   behavior: "smooth",
                 });
 
@@ -427,6 +444,28 @@ const Video = () => {
             // Cancel
             IsFocus.focused.current.firstChild.children[1].children[1].children[0].click();
           }
+        }
+      } else if(IsFocus.focused == "video"){
+        console.log("dwadwawa");
+        if(nilai.hand == 'Right' && nilai.gesture == 'One'){
+          setIsPlaying(true)
+
+          console.log('right');
+
+
+        } else if(nilai.hand == 'Left' && nilai.gesture == 'One'){
+          setIsPlaying(false)
+
+          console.log('kiri');
+
+        } else if((nilai.hand == 'Left' || nilai.hand == 'Right') && nilai.gesture == "Open"){
+          playerRef.current.wrapper.parentElement.parentElement.firstChild.lastChild.click()
+
+          SetFocus({
+            ...IsFocus,
+            description: "",
+            focused: null,
+          });
         }
       }
     }
