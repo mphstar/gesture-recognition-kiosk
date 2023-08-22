@@ -49,30 +49,7 @@ const Cart = () => {
         if (result.isConfirmed) {
           await sendData();
 
-          toast.success("Payment Success", {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-
-          // Here send data cart to python
-          SetDataCart({
-            total_items: 0,
-            price: 0,
-            data: [],
-          });
-
-          ShowCart(false);
-          SetFocus({
-            ...IsFocus,
-            description: "",
-            focused: null,
-          });
+          
         }
       });
     }
@@ -104,6 +81,30 @@ const Cart = () => {
           body: JSON.stringify({ transaction: DataCart, isPrinting: true }), // Ganti dengan data yang ingin Anda kirim
         }).then((res) => {
           Swal.close();
+          toast.success("Payment Success", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          // Here send data cart to python
+          SetDataCart({
+            total_items: 0,
+            price: 0,
+            data: [],
+          });
+
+          ShowCart(false);
+          SetFocus({
+            ...IsFocus,
+            description: "",
+            focused: null,
+          });
         });
 
       } else if(result.isDismissed) {
@@ -116,6 +117,30 @@ const Cart = () => {
         }).then((res) => {
           console.log(res);
           Swal.close();
+          toast.success("Payment Success", {
+            position: "top-center",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          // Here send data cart to python
+          SetDataCart({
+            total_items: 0,
+            price: 0,
+            data: [],
+          });
+
+          ShowCart(false);
+          SetFocus({
+            ...IsFocus,
+            description: "",
+            focused: null,
+          });
         });
       }
     });

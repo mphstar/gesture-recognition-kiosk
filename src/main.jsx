@@ -2,13 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Admin/Dashboard.jsx";
 import Snack from "./pages/Admin/products/Snack.jsx";
 import Drink from "./pages/Admin/products/Drink.jsx";
 import Ice from "./pages/Admin/products/Ice.jsx";
 import History from "./pages/Admin/History.jsx";
+
+var isAuthentication = false
+
+const getSession = localStorage.getItem('isLogin')
+if(getSession){
+  isAuthentication = true
+}
+
+
+const requireAuthentication = (element) => {
+  return isAuthentication ? element : <Navigate to={'/login'} />;
+};
 
 const router = createBrowserRouter([
   {
@@ -17,27 +29,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: isAuthentication ? <Navigate to={'/dashboard'} /> : <Login />,
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: requireAuthentication(<Dashboard />),
   },
   {
     path: "/products/snack",
-    element: <Snack />,
+    element: requireAuthentication(<Snack />),
   },
   {
     path: "/products/drink",
-    element: <Drink />,
+    element: requireAuthentication(<Drink />),
   },
   {
     path: "/products/icecream",
-    element: <Ice />,
+    element: requireAuthentication(<Ice />),
   },
   {
     path: "/history",
-    element: <History />,
+    element: requireAuthentication(<History />),
   },
 ]);
 

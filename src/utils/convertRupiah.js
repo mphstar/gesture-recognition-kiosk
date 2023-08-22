@@ -15,4 +15,10 @@ const formatPrice = (priceNumber) => {
   return formattedPrice;
 };
 
-export default { convertPriceToNumber, formatPrice };
+const formatCurrency = (text) => {
+  let value = text.replace(/\D/g, ""); // Remove non-numeric characters
+  value = value === "" ? "" : parseInt(value).toLocaleString("en-US");
+  return value
+};
+
+export default { convertPriceToNumber, formatPrice, formatCurrency };
